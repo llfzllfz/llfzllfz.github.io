@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[Hello_myfriends]]></title>
+    <url>%2F2019%2F01%2F12%2FHello_myfriends%2F</url>
+    <content type="text"><![CDATA[[TOC] hello第一篇也不知道改写什么，花了两天时间搭好了这个博客，看着来吧，先瞎写点什么东西。(看着上面的TOC真难受，也不知道怎么改，想要个目录) 你猜我会不会在这个标题写东西其实我也不知道 听说这是子列表 好吧，上个标题就没打算写东西，测试测试md。 加粗斜线 测试继续接下来测试什么好呢？(列表时记得空一行) A B C 1 2 3 2 3 4 好的，继续这怎么可以没有代码呢12345678#include &lt;bits/stdc++.h&gt;using namespace std;int main()&#123; cout&lt;&lt;"hello world!"&lt;&lt;endl; return 0;&#125; hello everyone 12cout&lt;&lt;&quot;hello world!&quot;&lt;&lt;endl;//也不知道是不是会出现行号 hhh END最后，寒假开始会更新博客，看具体的刷题情况吧（寒假还打算好好的学一下呢）。]]></content>
+      <tags>
+        <tag>hello</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hello World]]></title>
+    <url>%2F2019%2F01%2F12%2Fhello-world%2F</url>
+    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
+  </entry>
+</search>
