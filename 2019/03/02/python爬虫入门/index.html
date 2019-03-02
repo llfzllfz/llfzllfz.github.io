@@ -104,15 +104,15 @@
 <meta property="og:site_name" content="llfzllfz">
 <meta property="og:description" content="python爬虫入门学了一下爬虫，感觉云玩家和自己上手还是有去别的 真的看看简单，做起来就有点难了 注意爬虫首先我们要分析它的合法性：当然大部分情况下是合法的毕竟搜索引擎就是最大的爬虫啊但是，如果遇到网站上有明确说明的，例如淘宝，那就最好不要去爬了吧，而且淘宝对于爬虫还是有限制的。 1www.taobao.com/robots.txt 在网站后面加 /robots.txt 就可以知道网站会禁止你爬">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://llfzllfz.com/2019/03/02/Python爬虫入门/博客/hexo_blog/source/_posts/Python爬虫入门/网站分析.png">
-<meta property="og:image" content="http://llfzllfz.com/2019/03/02/Python爬虫入门/博客/hexo_blog/source/_posts/Python爬虫入门/小说名字.png">
-<meta property="og:image" content="http://llfzllfz.com/2019/03/02/Python爬虫入门/博客/hexo_blog/source/_posts/Python爬虫入门/具体的章节和url.png">
-<meta property="og:image" content="http://llfzllfz.com/2019/03/02/Python爬虫入门/博客/hexo_blog/source/_posts/Python爬虫入门/第一章.png">
-<meta property="og:updated_time" content="2019-03-02T10:28:59.325Z">
+<meta property="og:image" content="http://llfzllfz.com/2019/03/02/Python爬虫入门/网站分析.png">
+<meta property="og:image" content="http://llfzllfz.com/2019/03/02/Python爬虫入门/小说名字.png">
+<meta property="og:image" content="http://llfzllfz.com/2019/03/02/Python爬虫入门/具体的章节和url.png">
+<meta property="og:image" content="http://llfzllfz.com/2019/03/02/Python爬虫入门/第一章.png">
+<meta property="og:updated_time" content="2019-03-02T10:38:02.751Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python爬虫入门">
 <meta name="twitter:description" content="python爬虫入门学了一下爬虫，感觉云玩家和自己上手还是有去别的 真的看看简单，做起来就有点难了 注意爬虫首先我们要分析它的合法性：当然大部分情况下是合法的毕竟搜索引擎就是最大的爬虫啊但是，如果遇到网站上有明确说明的，例如淘宝，那就最好不要去爬了吧，而且淘宝对于爬虫还是有限制的。 1www.taobao.com/robots.txt 在网站后面加 /robots.txt 就可以知道网站会禁止你爬">
-<meta name="twitter:image" content="http://llfzllfz.com/2019/03/02/Python爬虫入门/博客/hexo_blog/source/_posts/Python爬虫入门/网站分析.png">
+<meta name="twitter:image" content="http://llfzllfz.com/2019/03/02/Python爬虫入门/网站分析.png">
 
 
 
@@ -400,7 +400,7 @@
                 
               
 
-              <time title="创建时间：2019-03-02 18:23:48 / 修改时间：18:28:59" itemprop="dateCreated datePublished" datetime="2019-03-02T18:23:48+08:00">2019-03-02</time>
+              <time title="创建时间：2019-03-02 18:23:48 / 修改时间：18:38:02" itemprop="dateCreated datePublished" datetime="2019-03-02T18:23:48+08:00">2019-03-02</time>
             
 
             
@@ -499,14 +499,14 @@
 <h2 id="过程分析"><a href="#过程分析" class="headerlink" title="过程分析"></a>过程分析</h2><p>首先我们要爬取一个网页，那么我们就需要一个网址，因为我比较喜欢看小说，因此就选择了一个小说网站来爬：</p>
 <p><a href="https://www.biquge5.com/25_25502/" target="_blank" rel="noopener">https://www.biquge5.com/25_25502/</a> （我选择的是笔趣阁）</p>
 <p>我们需要对这个网站进行分析：（鼠标右键 - &gt; 查看网页源代码）</p>
-<p><img src="/2019/03/02/Python爬虫入门/博客\hexo_blog\source\_posts\Python爬虫入门\网站分析.png" alt=""></p>
+<p><img src="/2019/03/02/Python爬虫入门/网站分析.png" alt=""></p>
 <p>我们可以通过这个源码分析分析出一些东西：</p>
 <p>1、找到小说的名称</p>
-<p><img src="/2019/03/02/Python爬虫入门/博客\hexo_blog\source\_posts\Python爬虫入门\小说名字.png" alt=""></p>
+<p><img src="/2019/03/02/Python爬虫入门/小说名字.png" alt=""></p>
 <p>2、找到小说下面的具体的章节和链接（url）：</p>
-<p><img src="/2019/03/02/Python爬虫入门/博客\hexo_blog\source\_posts\Python爬虫入门\具体的章节和url.png" alt=""></p>
+<p><img src="/2019/03/02/Python爬虫入门/具体的章节和url.png" alt=""></p>
 <p>3、通过url再进入具体的章节内容，然后再进入网页源代码(第一章为例)：</p>
-<p><img src="/2019/03/02/Python爬虫入门/博客\hexo_blog\source\_posts\Python爬虫入门\第一章.png" alt=""></p>
+<p><img src="/2019/03/02/Python爬虫入门/第一章.png" alt=""></p>
 <p>4、找到其中的正文内容就可以导出来了</p>
 <p>当然网页的分析需要正则表达式</p>
 <h2 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h2><p>这里通过 re.findall（） 来实现</p>
