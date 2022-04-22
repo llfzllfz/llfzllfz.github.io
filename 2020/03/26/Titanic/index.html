@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="data_prepared观察数据，进行数据分析  123train = pd.read_csv(r&apos;train.csv&apos;)pd.set_option(&apos;display.max_columns&apos;,None)print(train.head(10)) PassengerId (ID)共891个不同值，因此无价值，可以考虑删除 Survived (是否生存)很明显的label标签，也是我们需要预测的对">
+<meta name="keywords" content="kaggle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Titanic">
+<meta property="og:url" content="http://llfzllfz.com/2020/03/26/Titanic/index.html">
+<meta property="og:site_name" content="llfzllfz">
+<meta property="og:description" content="data_prepared观察数据，进行数据分析  123train = pd.read_csv(r&apos;train.csv&apos;)pd.set_option(&apos;display.max_columns&apos;,None)print(train.head(10)) PassengerId (ID)共891个不同值，因此无价值，可以考虑删除 Survived (是否生存)很明显的label标签，也是我们需要预测的对">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/data_jupyter.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Survived.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Survived_Pclass.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Survived_Name.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Survived_Name_IV.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Survived_Sex.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Survived_Age.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Survived_Age_line.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Survived_SibSp.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Survived_SibSp_line.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Survived_Parch.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Survived_Parch_line.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Survived_Ticket_line.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Survived_Fare.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Survived_Fare_line.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Fare_Pclass.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Survived_Embarked.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Survived_Embarked_line.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Age_Pclass.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Age_Parch.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Age_SibSp.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Age_Sex.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Age_Name.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Age_Fare_group.png">
+<meta property="og:image" content="http://llfzllfz.com/2020/03/26/Titanic/Survived_Cabin.png">
+<meta property="og:updated_time" content="2020-03-26T02:26:15.416Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Titanic">
+<meta name="twitter:description" content="data_prepared观察数据，进行数据分析  123train = pd.read_csv(r&apos;train.csv&apos;)pd.set_option(&apos;display.max_columns&apos;,None)print(train.head(10)) PassengerId (ID)共891个不同值，因此无价值，可以考虑删除 Survived (是否生存)很明显的label标签，也是我们需要预测的对">
+<meta name="twitter:image" content="http://llfzllfz.com/2020/03/26/Titanic/data_jupyter.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://llfzllfz.com/2020/03/26/Titanic/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Titanic | llfzllfz</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">llfzllfz</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://llfzllfz.com/2020/03/26/Titanic/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="llfzllfz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/hello.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="llfzllfz">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Titanic
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-26 10:03:40 / 修改时间：10:26:15" itemprop="dateCreated datePublished" datetime="2020-03-26T10:03:40+08:00">2020-03-26</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/03/26/Titanic/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2020/03/26/Titanic/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">24k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">43 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="data-prepared"><a href="#data-prepared" class="headerlink" title="data_prepared"></a>data_prepared</h1><p>观察数据，进行数据分析</p>
+<p><img src="/2020/03/26/Titanic/data_jupyter.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">train = pd.read_csv(<span class="string">r'train.csv'</span>)</span><br><span class="line">pd.set_option(<span class="string">'display.max_columns'</span>,<span class="keyword">None</span>)</span><br><span class="line">print(train.head(<span class="number">10</span>))</span><br></pre></td></tr></table></figure>
+<h2 id="PassengerId-ID"><a href="#PassengerId-ID" class="headerlink" title="PassengerId (ID)"></a>PassengerId (ID)</h2><p>共891个不同值，因此无价值，可以考虑删除</p>
+<h2 id="Survived-是否生存"><a href="#Survived-是否生存" class="headerlink" title="Survived (是否生存)"></a>Survived (是否生存)</h2><p>很明显的label标签，也是我们需要预测的对象</p>
+<p><img src="/2020/03/26/Titanic/Survived.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train[<span class="string">'Survived'</span>].value_counts().plot.bar(title = <span class="string">'Survived'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="Pclass-船舱等级"><a href="#Pclass-船舱等级" class="headerlink" title="Pclass(船舱等级)"></a>Pclass(船舱等级)</h2><p>生成一张关于Pclass的生存人数图看看</p>
+<p><img src="/2020/03/26/Titanic/Survived_Pclass.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Survived_Pclass = train[train.Survived==<span class="number">1</span>].groupby(train.Pclass).Survived.count()</span><br><span class="line">Not_Survived_Pclass = train[train.Survived==<span class="number">0</span>].groupby(train.Pclass).Survived.count()</span><br><span class="line">plt.subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>)</span><br><span class="line">Survived_Pclass.plot.bar(title=<span class="string">'Survived Pclass'</span>)</span><br><span class="line">plt.subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">Not_Survived_Pclass.plot.bar(title=<span class="string">'Not Survived Pclass'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>发现Pclassd对于存活率还是有比较大的影响的，因此我们可以通过计算该特征的IV判断是否选择</p>
+<p>经过计算，该特征的IV为：0.5006200325081741，因此使用该特征</p>
+<h2 id="Name-姓名"><a href="#Name-姓名" class="headerlink" title="Name(姓名)"></a>Name(姓名)</h2><p>通过数据集发现，Name看上去非常的杂乱无章，因为每个人的名字都可能不同，但是仔细研究，依旧可以尝试提取Name中的特征。</p>
+<p>例如第一个Name：Braund, <strong>Mr.</strong> Owen Harris ,可以尝试提取其中的 Mr. 作为特征</p>
+<p><img src="/2020/03/26/Titanic/Survived_Name.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">train[<span class="string">'Name'</span>] = train[<span class="string">'Name'</span>].str.split(<span class="string">'.'</span>).str.get(<span class="number">0</span>)</span><br><span class="line">train[<span class="string">'Name'</span>] = train[<span class="string">'Name'</span>].str.split(<span class="string">','</span>).str.get(<span class="number">1</span>)</span><br><span class="line">Survived_Name = train[train.Survived == <span class="number">1</span>].groupby(train.Name).Survived.count()</span><br><span class="line">Not_Survived_Name = train[train.Survived == <span class="number">0</span>].groupby(train.Name).Survived.count()</span><br><span class="line">plt.subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>)</span><br><span class="line">Survived_Name.plot.bar(title = <span class="string">'Survived Name'</span>)</span><br><span class="line">plt.subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">Not_Survived_Name.plot.bar(title = <span class="string">'Not Survived Name'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>粗略一看其实也是有关联的，例如Miss存活率就比较高，接下来计算IV值</p>
+<p>仔细观察可以发现有些值不是两者都有的，对于这些值我们是无法计算WOE的，因此首先去除掉这些值：</p>
+<p><img src="/2020/03/26/Titanic/Survived_Name_IV.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">train_name = train.copy()</span><br><span class="line"><span class="keyword">for</span> idx <span class="keyword">in</span> range(len(train_name)):</span><br><span class="line">    <span class="keyword">if</span> train.Survived[idx] == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">if</span> train.Name[idx] <span class="keyword">not</span> <span class="keyword">in</span> Not_Survived_Name:</span><br><span class="line">            train_name.drop(index = idx,inplace = <span class="keyword">True</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">if</span> train.Name[idx] <span class="keyword">not</span> <span class="keyword">in</span> Survived_Name:</span><br><span class="line">            train_name.drop(index = idx,inplace = <span class="keyword">True</span>)</span><br><span class="line">            </span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> Survived_Name.index:</span><br><span class="line">    <span class="keyword">if</span> x <span class="keyword">not</span> <span class="keyword">in</span> Not_Survived_Name.index:</span><br><span class="line">        Survived_Name.drop(x,inplace = <span class="keyword">True</span>)</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> Not_Survived_Name.index:</span><br><span class="line">    <span class="keyword">if</span> x <span class="keyword">not</span> <span class="keyword">in</span> Survived_Name.index:</span><br><span class="line">        Not_Survived_Name.drop(x,inplace = <span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>)</span><br><span class="line">Survived_Name.plot.bar(title = <span class="string">'Survived Name'</span>)</span><br><span class="line">plt.subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">Not_Survived_Name.plot.bar(title = <span class="string">'Not Survived Name'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>然后通过这个再去计算IV值：1.526927503266331</p>
+<h2 id="Sex（性别）"><a href="#Sex（性别）" class="headerlink" title="Sex（性别）"></a>Sex（性别）</h2><p>生成一张关于性别的生存人数图看看：</p>
+<p><img src="/2020/03/26/Titanic/Survived_Sex.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Survived_Sex = train[train.Survived==<span class="number">1</span>].groupby(train.Sex).Survived.count()</span><br><span class="line">Not_Survived_Sex = train[train.Survived==<span class="number">0</span>].groupby(train.Sex).Survived.count()</span><br><span class="line">plt.subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>)</span><br><span class="line">Survived_Sex.plot.bar(title=<span class="string">'Survived Pclass'</span>)</span><br><span class="line">plt.subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">Not_Survived_Sex.plot.bar(title=<span class="string">'Not Survived Pclass'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>很明显看到女性的存活率比男性高，再来算算IV值：1.3371613282771198</p>
+<h2 id="Age-年龄"><a href="#Age-年龄" class="headerlink" title="Age(年龄)"></a>Age(年龄)</h2><p>因为Age是一个连续的变量，因此如果直接采用柱状图会导致无法分析，因此先对Age进行分组，令每10年为一段，共分成10段，对这10段进行分析：</p>
+<p><img src="/2020/03/26/Titanic/Survived_Age.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">train.dropna(inplace = <span class="keyword">True</span>,subset = [<span class="string">'Age'</span>])</span><br><span class="line">train[<span class="string">'Age_group'</span>] = train[<span class="string">'Age'</span>]/<span class="number">10</span> + <span class="number">1</span></span><br><span class="line">train[<span class="string">'Age_group'</span>] = train[<span class="string">'Age_group'</span>].astype(int)</span><br><span class="line">Survived_Age = train[train.Survived==<span class="number">1</span>].groupby(train.Age_group).Survived.count()</span><br><span class="line">Not_Survived_Age = train[train.Survived==<span class="number">0</span>].groupby(train.Age_group).Survived.count()</span><br><span class="line">plt.subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>)</span><br><span class="line">Survived_Age.plot.bar(title=<span class="string">'Survived Age'</span>,rot=<span class="number">0</span>)</span><br><span class="line">plt.subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">Not_Survived_Age.plot.bar(title=<span class="string">'Not Survived Age'</span>,rot=<span class="number">0</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/03/26/Titanic/Survived_Age_line.png" alt=""></p>
+<p>发现Age对Survived影响还是挺大的，再来看看IV值：0.3074963748595815，可以选择此特征值</p>
+<h2 id="SibSp-旁系"><a href="#SibSp-旁系" class="headerlink" title="SibSp(旁系)"></a>SibSp(旁系)</h2><p><img src="/2020/03/26/Titanic/Survived_SibSp.png" alt=""></p>
+<p><img src="/2020/03/26/Titanic/Survived_SibSp_line.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Survived_SibSp = train[train.Survived==<span class="number">1</span>].groupby(train.SibSp).Survived.count()</span><br><span class="line">Not_Survived_SibSp = train[train.Survived==<span class="number">0</span>].groupby(train.SibSp).Survived.count()</span><br><span class="line">Survived_SibSp.plot.line(label=<span class="string">'Survived SibSp'</span>,rot=<span class="number">0</span>)</span><br><span class="line">Not_Survived_SibSp.plot.line(label=<span class="string">'Not Survived SibSp'</span>,rot=<span class="number">0</span>)</span><br><span class="line">plt.legend(loc = <span class="string">'upper right'</span>)</span><br><span class="line">plt.title(<span class="string">'SibSp in Survived'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>IV：0.14091013517926007 </p>
+<h2 id="Parch-直系亲友"><a href="#Parch-直系亲友" class="headerlink" title="Parch(直系亲友)"></a>Parch(直系亲友)</h2><p><img src="/2020/03/26/Titanic/Survived_Parch.png" alt=""></p>
+<p><img src="/2020/03/26/Titanic/Survived_Parch_line.png" alt=""></p>
+<p>IV:0.1147797445933584</p>
+<h2 id="Ticket-票编号"><a href="#Ticket-票编号" class="headerlink" title="Ticket(票编号)"></a>Ticket(票编号)</h2><p>原以为看数据觉得Ticket应该是一个无用的数据，但是作图一分析，居然可以当作有用信息：</p>
+<p><img src="/2020/03/26/Titanic/Survived_Ticket_line.png" alt=""></p>
+<p>虽然大部分的编号是不一样的，但是依旧有一部分的编号是相同的，选择其中既有正例又有反例的部分做IV，课可以得到IV值：0.2421326661022386</p>
+<p>不过经过这么剔除后，原数据大小891就变成了127条，损失太多，是否使用有待考虑。</p>
+<h2 id="Fare-票价"><a href="#Fare-票价" class="headerlink" title="Fare(票价)"></a>Fare(票价)</h2><p>在这个数据集中，票价最高512.3292，最低0，共有248种不同的票价，将这些票价分成25组再作图：</p>
+<p>(分成25份分法：最高最低值均分25份)</p>
+<p><img src="/2020/03/26/Titanic/Survived_Fare.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">train[<span class="string">'Fare_group'</span>] = train[<span class="string">'Fare'</span>]/((train[<span class="string">'Fare'</span>].max()+<span class="number">0.001</span>)/<span class="number">25</span>) + <span class="number">1</span></span><br><span class="line">train[<span class="string">'Fare_group'</span>] = train[<span class="string">'Fare_group'</span>].astype(int)</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/03/26/Titanic/Survived_Fare_line.png" alt=""></p>
+<p>发现票价越低存活率越低，大胆猜测票价可能受到船舱等级的影响</p>
+<p><img src="/2020/03/26/Titanic/Fare_Pclass.png" alt=""></p>
+<p>查图，果然票价越低，乘坐Pclass=3的船舱的概率越大</p>
+<h2 id="Cabin-客舱编号"><a href="#Cabin-客舱编号" class="headerlink" title="Cabin(客舱编号)"></a>Cabin(客舱编号)</h2><p>这个属性的数据缺失严重，所有891条数据中，只有204条数据是有效的，其余数据均缺失，暂时不采用该数据</p>
+<h2 id="Embarked-上船的港口编号"><a href="#Embarked-上船的港口编号" class="headerlink" title="Embarked(上船的港口编号)"></a>Embarked(上船的港口编号)</h2><p><img src="/2020/03/26/Titanic/Survived_Embarked.png" alt=""></p>
+<p><img src="/2020/03/26/Titanic/Survived_Embarked_line.png" alt=""></p>
+<p>IV:0.12278149648986617</p>
+<p>这个属性相对于别的属性利用价值偏小</p>
+<h1 id="缺失值处理"><a href="#缺失值处理" class="headerlink" title="缺失值处理"></a>缺失值处理</h1><p>在处理整个数据的时候，发现有些数据有残缺，需要进行缺失值处理：</p>
+<h2 id="V1"><a href="#V1" class="headerlink" title="V1"></a>V1</h2><p>对于Age参数，采用平均值填充，</p>
+<p>对于Cabin，取消该列，</p>
+<p>对于Embarked，暂时发现价值偏小，因此暂时取消该值</p>
+<h2 id="V2"><a href="#V2" class="headerlink" title="V2"></a>V2</h2><p>在处理缺失值之前，先总结一下V1版本：</p>
+<p><font size="5"><code>·</code></font> 首先是Age的处理，直接采用平均值太过暴力</p>
+<p><font size="5"><code>·</code></font> 其次是Cabin的处理和Embarked的处理，直接取消会不会产生影响</p>
+<p><font size="5"><code>·</code></font> 对于Name属性的编码出现了错误，直接使用 <code>lab.fit_transform</code> 会产生编码错误</p>
+<p><font size="5"><code>·</code></font> 对于SibSp 属性和 Parch 属性，感觉在一定程度上有重复</p>
+<h3 id="优化1（Age）"><a href="#优化1（Age）" class="headerlink" title="优化1（Age）"></a>优化1（Age）</h3><p>相对于V1来说，Age直接采用平均值填充未免太过暴力，因此考虑别的填充方式。</p>
+<p>首先我们需要查看Age和别的属性之间的关系：</p>
+<p><img src="/2020/03/26/Titanic/Age_Pclass.png" alt=""></p>
+<p><img src="/2020/03/26/Titanic/Age_Parch.png" alt=""></p>
+<p><img src="/2020/03/26/Titanic/Age_SibSp.png" alt=""></p>
+<p><img src="/2020/03/26/Titanic/Age_Sex.png" alt=""></p>
+<p>(Sex只有0和1两个属性)根据上图可以发现，在每个年龄段，Sex为1的人数都大于Sex为0的人数</p>
+<p><img src="/2020/03/26/Titanic/Age_Name.png" alt=""></p>
+<p>虽然这张图看上去很杂乱，但是还是可以发现一些规律</p>
+<p>因为Fare是连续值，因此将Fare分成25份之后再查看Age的分布情况：</p>
+<p><img src="/2020/03/26/Titanic/Age_Fare_group.png" alt=""></p>
+<p>因此考虑使用预测的方式来对Age进行填充。</p>
+<p>在这个版本中采用对Age分组，然后采用分类的方式（或许以后可以考虑回归的版本）。</p>
+<h3 id="优化2（Cabin）"><a href="#优化2（Cabin）" class="headerlink" title="优化2（Cabin）"></a>优化2（Cabin）</h3><p>对于Cabin属性，缺失值确实太多了，如果把Cabin属性中的缺失部分记为X，非缺失部分取其首位字母，作图看看：</p>
+<p><img src="/2020/03/26/Titanic/Survived_Cabin.png" alt=""></p>
+<p>预估IV：0.4675285868289105 因此可以尝试将缺失值如此处理</p>
+<h3 id="优化3（Embarked）"><a href="#优化3（Embarked）" class="headerlink" title="优化3（Embarked）"></a>优化3（Embarked）</h3><p>对于Embarked，也尝试使用，因缺失值较少，采取随机赋值的方式</p>
+<h3 id="优化4（Name编码）"><a href="#优化4（Name编码）" class="headerlink" title="优化4（Name编码）"></a>优化4（Name编码）</h3><p>提取出Name中的所有不同值，依次进行编码，如果test中出现了train以外的，统一归为一类</p>
+<p>（还有个问题：在name中有些name的个数为1，这样的样本是否可以结合起来）</p>
+<p>针对上面这个问题，采取：将train中出现个数为个位数的归为一类，和test出现了train以外的归在一起</p>
+<h3 id="优化5（SibSp-和-Parch）"><a href="#优化5（SibSp-和-Parch）" class="headerlink" title="优化5（SibSp 和 Parch）"></a>优化5（SibSp 和 Parch）</h3><p>在这方面采用多加一个Family_size属性，其值为SibSp和Parch之和</p>
+<h3 id="优化6（Name属性提取）"><a href="#优化6（Name属性提取）" class="headerlink" title="优化6（Name属性提取）"></a>优化6（Name属性提取）</h3><p>在Name属性中提取了Mr.的内容，但是Name属性中还有姓氏，提取出姓氏形成新的属性Surname</p>
+<p>在新属性Surname中，采用二分类，具有相同姓氏的归为1，否则为0</p>
+<h3 id="优化7（模型优化）"><a href="#优化7（模型优化）" class="headerlink" title="优化7（模型优化）"></a>优化7（模型优化）</h3><p>同时在模型的实现方面，一方面采用随机森林对所有属性进行训练，同时训练多个随机森林，对多种属性组和进行训练，最后按照不同的权重比例取值</p>
+<h2 id="V3"><a href="#V3" class="headerlink" title="V3"></a>V3</h2><p><font size="5"><code>·</code></font> 有了Family_size之后感觉SibSp和Parch有点多余，因此选择删除</p>
+<p><font size="5"><code>·</code></font> Cabin选择缺失值插入X，Cabin损失值太多，最终还是选择放弃该属性</p>
+<p><font size="5"><code>·</code></font> 修改了一下随机森林训练的属性</p>
+<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><h2 id="V1-1"><a href="#V1-1" class="headerlink" title="V1"></a>V1</h2><p>采用随机森林，缺失值处理采用V1的处理方式，采用的特征组合为：Pclass,Name,Sex,Age,SibSp,Parch,Fare</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd<span class="comment">#导入数据文件</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np<span class="comment">#科学计算计算库</span></span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt<span class="comment">#数据可视化库</span></span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"><span class="keyword">import</span> pandas_profiling <span class="keyword">as</span> ppf<span class="comment">#eda</span></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> LabelEncoder<span class="comment">#标签编码</span></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> MinMaxScaler<span class="comment">#归一化</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split<span class="comment">#数据集的划分</span></span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression<span class="comment">#算法</span></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> mean_absolute_error<span class="comment">#评估函数</span></span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame <span class="keyword">as</span> df</span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> roc_auc_score</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delete_data</span><span class="params">(train,test,name)</span>:</span></span><br><span class="line">    train.drop(name,axis=<span class="number">1</span>,inplace = <span class="keyword">True</span>)</span><br><span class="line">    test.drop(name,axis=<span class="number">1</span>,inplace = <span class="keyword">True</span> )</span><br><span class="line">    <span class="keyword">return</span> train,test</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lab_data</span><span class="params">(lab,train,test,name)</span>:</span></span><br><span class="line">    train[name] = lab.fit_transform(train[name])</span><br><span class="line">    test[name] = lab.fit_transform(test[name])</span><br><span class="line">    <span class="keyword">return</span> train,test</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">minmax_data</span><span class="params">(minmax,train,test,name)</span>:</span></span><br><span class="line">    train[name] = minmax.fit_transform(np.array(train[name]).reshape(<span class="number">-1</span>,<span class="number">1</span>))</span><br><span class="line">    test[name] = minmax.fit_transform(np.array(test[name]).reshape(<span class="number">-1</span>,<span class="number">1</span>))</span><br><span class="line">    <span class="keyword">return</span> train,test</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    train = pd.read_csv(<span class="string">r'E:\502\kaggle\get_starts\titanic\data\train.csv'</span>)</span><br><span class="line">    test = pd.read_csv(<span class="string">r'E:\502\kaggle\get_starts\titanic\data\test.csv'</span>)</span><br><span class="line">    <span class="comment">#pd.set_option('display.max_columns',None)</span></span><br><span class="line">    train[<span class="string">'Name'</span>] = train[<span class="string">'Name'</span>].str.split(<span class="string">'.'</span>).str.get(<span class="number">0</span>)</span><br><span class="line">    train[<span class="string">'Name'</span>] = train[<span class="string">'Name'</span>].str.split(<span class="string">','</span>).str.get(<span class="number">1</span>)</span><br><span class="line">    test[<span class="string">'Name'</span>] = test[<span class="string">'Name'</span>].str.split(<span class="string">'.'</span>).str.get(<span class="number">0</span>)</span><br><span class="line">    test[<span class="string">'Name'</span>] = test[<span class="string">'Name'</span>].str.split(<span class="string">','</span>).str.get(<span class="number">1</span>)</span><br><span class="line">    train[<span class="string">'Age'</span>] = train[<span class="string">'Age'</span>].fillna(np.mean(train[<span class="string">'Age'</span>]))</span><br><span class="line">    test[<span class="string">'Age'</span>] = test[<span class="string">'Age'</span>].fillna(np.mean(test[<span class="string">'Age'</span>]))</span><br><span class="line">    PassengerId = test.PassengerId</span><br><span class="line">    train,test = delete_data(train,test,<span class="string">'Cabin'</span>)</span><br><span class="line">    train,test = delete_data(train,test,<span class="string">'Embarked'</span>)</span><br><span class="line">    train,test = delete_data(train,test,<span class="string">'Ticket'</span>)</span><br><span class="line">    train,test = delete_data(train,test,<span class="string">'PassengerId'</span>)</span><br><span class="line">    lab = LabelEncoder()</span><br><span class="line">    train,test = lab_data(lab,train,test,<span class="string">'Sex'</span>)</span><br><span class="line">    train,test = lab_data(lab,train,test,<span class="string">'Name'</span>)</span><br><span class="line">    test[<span class="string">'Fare'</span>] = test[<span class="string">'Fare'</span>].fillna(np.mean(test[<span class="string">'Fare'</span>]))</span><br><span class="line">    minmax = MinMaxScaler()</span><br><span class="line">    train,test = minmax_data(minmax,train,test,<span class="string">'Fare'</span>)</span><br><span class="line">    train,test = minmax_data(minmax,train,test,<span class="string">'Age'</span>)</span><br><span class="line">    <span class="comment">#train.info()</span></span><br><span class="line">    x = train.drop(<span class="string">'Survived'</span>,axis = <span class="number">1</span>)</span><br><span class="line">    y = train[<span class="string">'Survived'</span>]</span><br><span class="line">    x_train,x_test,y_train,y_test = train_test_split(x,y,test_size = <span class="number">0.2</span>,random_state = <span class="number">10</span>)</span><br><span class="line">    <span class="comment">#print(x_train.shape,y_train.shape)</span></span><br><span class="line">    model = RandomForestClassifier(n_estimators=<span class="number">100</span>,</span><br><span class="line">                                   max_features=<span class="string">'sqrt'</span>)</span><br><span class="line">    model.fit(x_train,y_train)</span><br><span class="line">    rf_predictions = model.predict(x_test)</span><br><span class="line">    <span class="comment">#print(rf_predictions)</span></span><br><span class="line">    print(model.score(x_test,y_test))</span><br><span class="line">    test_predictions = model.predict(test)</span><br><span class="line">    submission = pd.DataFrame(&#123;</span><br><span class="line">            <span class="string">'PassengerId'</span>:PassengerId,</span><br><span class="line">            <span class="string">'Survived'</span>:test_predictions&#125;)</span><br><span class="line">    submission.to_csv(<span class="string">'V1.1.csv'</span>,index = <span class="keyword">False</span>)</span><br></pre></td></tr></table></figure>
+<p>该实验在kaggle上面评分0.71291</p>
+<h2 id="V2-1"><a href="#V2-1" class="headerlink" title="V2"></a>V2</h2><p>对于Age的预测采用的属性：Pclass，Name，Sex, SibSP, Parch, Fare_group, Family_size,Embarked,Surname,Cabin</p>
+<p>采用多个随机森林按照不同的权重取值，按照不同的属性组合进行随机森林的训练</p>
+<p>随机森林训练：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'Pclass'</span>,<span class="string">'Fare'</span>],</span><br><span class="line">[<span class="string">'Pclass'</span>,<span class="string">'Fare_group'</span>],</span><br><span class="line">[<span class="string">'SibSp'</span>,<span class="string">'Parch'</span>],</span><br><span class="line">[<span class="string">'SibSp'</span>,<span class="string">'Parch'</span>,<span class="string">'Family_size'</span>],</span><br><span class="line">[<span class="string">'Age_group'</span>,<span class="string">'SibSp'</span>,<span class="string">'Parch'</span>,<span class="string">'Family_size'</span>],</span><br><span class="line">[<span class="string">'Age_group'</span>,<span class="string">'Name'</span>,<span class="string">'Surname'</span>],</span><br><span class="line">[<span class="string">'SibSp'</span>,<span class="string">'Parch'</span>,<span class="string">'Family_size'</span>,<span class="string">'Surname'</span>,<span class="string">'Name'</span>],</span><br><span class="line">[<span class="string">'Cabin'</span>,<span class="string">'Embarked'</span>],</span><br><span class="line">[<span class="string">'Fare_group'</span>,<span class="string">'Fare'</span>],</span><br><span class="line">[<span class="string">'Pclass'</span>,<span class="string">'Age_group'</span>,<span class="string">'Fare'</span>,<span class="string">'Fare_group'</span>],</span><br><span class="line">[<span class="string">'Surname'</span>,<span class="string">'Name'</span>],</span><br><span class="line">[<span class="string">'Pclass'</span>,<span class="string">'SibSp'</span>,<span class="string">'Parch'</span>,<span class="string">'Family_size'</span>],</span><br><span class="line">[all - <span class="string">'Name'</span>],</span><br><span class="line">[all - <span class="string">'Surname'</span>],</span><br><span class="line">[all - <span class="string">'SibSp'</span>],</span><br><span class="line">[all - <span class="string">'Parch'</span>],</span><br><span class="line">[all - <span class="string">'Cabin'</span>],</span><br><span class="line">[all - <span class="string">'Embarked'</span>],</span><br><span class="line">[all - <span class="string">'Family_size'</span>],</span><br><span class="line">[all - <span class="string">'Fare_group'</span>],</span><br><span class="line">[all - <span class="string">'Age_group'</span>],</span><br><span class="line">[all - <span class="string">'Pclass'</span>],</span><br><span class="line">[all - <span class="string">'Fare'</span>],</span><br><span class="line">[all] * <span class="number">4</span></span><br></pre></td></tr></table></figure>
+<p>共计生成了27个预测结果，采用少数服从多数，阈值大约为18 ~ 19。对于每一个真实的结果，当含有1的个数大于等于阈值时，认为其是可靠的预测结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd<span class="comment">#导入数据文件</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np<span class="comment">#科学计算计算库</span></span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt<span class="comment">#数据可视化库</span></span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"><span class="keyword">import</span> pandas_profiling <span class="keyword">as</span> ppf<span class="comment">#eda</span></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> LabelEncoder<span class="comment">#标签编码</span></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> MinMaxScaler<span class="comment">#归一化</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split<span class="comment">#数据集的划分</span></span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression<span class="comment">#算法</span></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> mean_absolute_error<span class="comment">#评估函数</span></span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame <span class="keyword">as</span> df</span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> roc_auc_score</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_classification</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delete_data</span><span class="params">(train,test,name)</span>:</span></span><br><span class="line">    train.drop(name,axis=<span class="number">1</span>,inplace = <span class="keyword">True</span>)</span><br><span class="line">    test.drop(name,axis=<span class="number">1</span>,inplace = <span class="keyword">True</span> )</span><br><span class="line">    <span class="keyword">return</span> train,test</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lab_data</span><span class="params">(lab,train,test,name)</span>:</span></span><br><span class="line">    train[name] = lab.fit_transform(train[name])</span><br><span class="line">    print(lab.classes_)</span><br><span class="line">    test[name] = lab.fit_transform(test[name])</span><br><span class="line">    print(lab.classes_)</span><br><span class="line">    <span class="keyword">return</span> train,test</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">minmax_data</span><span class="params">(minmax,train,test,name)</span>:</span></span><br><span class="line">    train[name] = minmax.fit_transform(np.array(train[name]).reshape(<span class="number">-1</span>,<span class="number">1</span>))</span><br><span class="line">    test[name] = minmax.fit_transform(np.array(test[name]).reshape(<span class="number">-1</span>,<span class="number">1</span>))</span><br><span class="line">    <span class="keyword">return</span> train,test</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ready_data</span><span class="params">(x,test,name)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x[name],test[name]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">RandomForest</span><span class="params">(x,y,test,ans,idx)</span>:</span></span><br><span class="line">    clf = RandomForestClassifier(n_estimators = <span class="number">100</span>)</span><br><span class="line">    clf.fit(x,y)</span><br><span class="line">    ans[idx] = clf.predict(test)</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    train = pd.read_csv(<span class="string">r'train.csv'</span>)</span><br><span class="line">    test = pd.read_csv(<span class="string">r'test.csv'</span>)</span><br><span class="line">    train_ = pd.read_csv(<span class="string">r'E:\502\kaggle\get_starts\titanic\data\train.csv'</span>)</span><br><span class="line">    test_ = pd.read_csv(<span class="string">r'E:\502\kaggle\get_starts\titanic\data\test.csv'</span>)</span><br><span class="line">    test_[<span class="string">'Fare'</span>] = test_[<span class="string">'Fare'</span>].fillna(np.mean(train_[<span class="string">'Fare'</span>]))</span><br><span class="line">    pd.set_option(<span class="string">'display.max_columns'</span>,<span class="keyword">None</span>)</span><br><span class="line">    train[<span class="string">'Fare'</span>] = train_[<span class="string">'Fare'</span>]</span><br><span class="line">    test[<span class="string">'Fare'</span>] = test_[<span class="string">'Fare'</span>]</span><br><span class="line">    minmax = MinMaxScaler()</span><br><span class="line">    train,test = minmax_data(minmax,train,test,<span class="string">'Fare'</span>)</span><br><span class="line">    train_Age = train.copy()</span><br><span class="line">    train_Age.dropna(inplace = <span class="keyword">True</span>,subset = [<span class="string">'Age'</span>])</span><br><span class="line">    train_Age[<span class="string">'Age_group'</span>] = train_Age[<span class="string">'Age'</span>]/<span class="number">10</span> + <span class="number">1</span></span><br><span class="line">    train_Age[<span class="string">'Age_group'</span>] = train_Age[<span class="string">'Age_group'</span>].astype(int)</span><br><span class="line">    train_Age.drop(<span class="string">'Survived'</span>,axis = <span class="number">1</span>,inplace = <span class="keyword">True</span>)</span><br><span class="line">    train_Age.drop(<span class="string">'PassengerId'</span>,axis = <span class="number">1</span>,inplace = <span class="keyword">True</span>)</span><br><span class="line">    train_Age.drop(<span class="string">'Age'</span>,axis = <span class="number">1</span>,inplace = <span class="keyword">True</span>)</span><br><span class="line">    </span><br><span class="line">    x_Age = train_Age.drop(<span class="string">'Age_group'</span>,axis = <span class="number">1</span>)</span><br><span class="line">    y_Age = train_Age[<span class="string">'Age_group'</span>]</span><br><span class="line">    </span><br><span class="line">    model = RandomForestClassifier(n_estimators=<span class="number">100</span>)</span><br><span class="line">    model.fit(x_Age,y_Age)</span><br><span class="line">    sums = <span class="number">0</span></span><br><span class="line">    alls = <span class="number">0</span></span><br><span class="line">    train[<span class="string">'Age_group'</span>] = model.predict(train[[<span class="string">'Pclass'</span>,<span class="string">'Name'</span>,<span class="string">'Sex'</span>,<span class="string">'SibSp'</span>,<span class="string">'Parch'</span>,<span class="string">'Cabin'</span>,<span class="string">'Embarked'</span>,<span class="string">'Fare_group'</span>,<span class="string">'Surname'</span>,<span class="string">'Family_size'</span>,<span class="string">'Fare'</span>]])</span><br><span class="line">    <span class="keyword">for</span> idx <span class="keyword">in</span> range(len(train)):</span><br><span class="line">        <span class="keyword">if</span> np.isnan(train[<span class="string">'Age'</span>][idx]) == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">if</span> train[<span class="string">'Age_group'</span>][idx] == int(train[<span class="string">'Age'</span>][idx] / <span class="number">10</span> + <span class="number">1</span>):</span><br><span class="line">                sums = sums + <span class="number">1</span></span><br><span class="line">            train[<span class="string">'Age_group'</span>][idx] = int(train[<span class="string">'Age'</span>][idx] / <span class="number">10</span> + <span class="number">1</span>)</span><br><span class="line">            alls = alls + <span class="number">1</span></span><br><span class="line">    train.drop(<span class="string">'Age'</span>,axis = <span class="number">1</span>,inplace = <span class="keyword">True</span>)</span><br><span class="line">    train.info()</span><br><span class="line">    print(sums,alls,sums / alls)</span><br><span class="line">    </span><br><span class="line">    test[<span class="string">'Age_group'</span>] = model.predict(test[[<span class="string">'Pclass'</span>,<span class="string">'Name'</span>,<span class="string">'Sex'</span>,<span class="string">'SibSp'</span>,<span class="string">'Parch'</span>,<span class="string">'Cabin'</span>,<span class="string">'Embarked'</span>,<span class="string">'Fare_group'</span>,<span class="string">'Surname'</span>,<span class="string">'Family_size'</span>,<span class="string">'Fare'</span>]])</span><br><span class="line">    <span class="keyword">for</span> idx <span class="keyword">in</span> range(len(test)):</span><br><span class="line">        <span class="keyword">if</span> np.isnan(test[<span class="string">'Age'</span>][idx]) == <span class="number">0</span>:</span><br><span class="line">            test[<span class="string">'Age_group'</span>][idx] = int(test[<span class="string">'Age'</span>][idx] / <span class="number">10</span> + <span class="number">1</span>)</span><br><span class="line">    test.drop(<span class="string">'Age'</span>,axis = <span class="number">1</span>,inplace = <span class="keyword">True</span>)</span><br><span class="line">    PassengerId = test[<span class="string">'PassengerId'</span>]</span><br><span class="line">    train,test = delete_data(train,test,<span class="string">'PassengerId'</span>)</span><br><span class="line">    x = train.drop(<span class="string">'Survived'</span>,axis = <span class="number">1</span>)</span><br><span class="line">    y = train[<span class="string">'Survived'</span>]</span><br><span class="line">    x_train,x_test,y_train,y_test = train_test_split(x,y,test_size = <span class="number">0.2</span>,random_state = <span class="number">10</span>)</span><br><span class="line">    ans = pd.DataFrame(&#123;<span class="string">'PassengerId'</span>:PassengerId&#125;)</span><br><span class="line">    l = [[<span class="string">'Pclass'</span>,<span class="string">'Fare'</span>],</span><br><span class="line">         [<span class="string">'Pclass'</span>,<span class="string">'Fare_group'</span>],</span><br><span class="line">         [<span class="string">'SibSp'</span>,<span class="string">'Parch'</span>],</span><br><span class="line">         [<span class="string">'SibSp'</span>,<span class="string">'Parch'</span>,<span class="string">'Family_size'</span>],</span><br><span class="line">         [<span class="string">'Age_group'</span>,<span class="string">'SibSp'</span>,<span class="string">'Parch'</span>,<span class="string">'Family_size'</span>],</span><br><span class="line">         [<span class="string">'Age_group'</span>,<span class="string">'Name'</span>,<span class="string">'Surname'</span>],</span><br><span class="line">         [<span class="string">'SibSp'</span>,<span class="string">'Parch'</span>,<span class="string">'Family_size'</span>,<span class="string">'Surname'</span>,<span class="string">'Name'</span>],</span><br><span class="line">         [<span class="string">'Cabin'</span>,<span class="string">'Embarked'</span>],</span><br><span class="line">         [<span class="string">'Fare_group'</span>,<span class="string">'Fare'</span>],</span><br><span class="line">         [<span class="string">'Pclass'</span>,<span class="string">'Age_group'</span>,<span class="string">'Fare'</span>,<span class="string">'Fare_group'</span>],</span><br><span class="line">         [<span class="string">'Surname'</span>,<span class="string">'Name'</span>],</span><br><span class="line">         [<span class="string">'Pclass'</span>,<span class="string">'SibSp'</span>,<span class="string">'Parch'</span>,<span class="string">'Family_size'</span>]]</span><br><span class="line">    x_test = test</span><br><span class="line">    x_train = x</span><br><span class="line">    y_train = y</span><br><span class="line">    <span class="keyword">for</span> idx <span class="keyword">in</span> range(len(l)):</span><br><span class="line">        print(l[idx])</span><br><span class="line">        n_x,n_t = ready_data(x_train,x_test,l[idx])</span><br><span class="line">        ans = RandomForest(n_x,y_train,n_t,ans,str(idx))</span><br><span class="line">    ans = RandomForest(x_train.drop(<span class="string">'Name'</span>,axis = <span class="number">1</span>),y_train,x_test.drop(<span class="string">'Name'</span>,axis = <span class="number">1</span>),ans,str(len(l)))</span><br><span class="line">    ans = RandomForest(x_train.drop(<span class="string">'Surname'</span>,axis = <span class="number">1</span>),y_train,x_test.drop(<span class="string">'Surname'</span>,axis = <span class="number">1</span>),ans,str(len(l) + <span class="number">1</span>))</span><br><span class="line">    ans = RandomForest(x_train.drop(<span class="string">'SibSp'</span>,axis = <span class="number">1</span>),y_train,x_test.drop(<span class="string">'SibSp'</span>,axis = <span class="number">1</span>),ans,str(len(l) + <span class="number">2</span>))</span><br><span class="line">    ans = RandomForest(x_train.drop(<span class="string">'Parch'</span>,axis = <span class="number">1</span>),y_train,x_test.drop(<span class="string">'Parch'</span>,axis = <span class="number">1</span>),ans,str(len(l) + <span class="number">3</span>))</span><br><span class="line">    ans = RandomForest(x_train.drop(<span class="string">'Cabin'</span>,axis = <span class="number">1</span>),y_train,x_test.drop(<span class="string">'Cabin'</span>,axis = <span class="number">1</span>),ans,str(len(l) + <span class="number">4</span>))</span><br><span class="line">    ans = RandomForest(x_train.drop(<span class="string">'Embarked'</span>,axis = <span class="number">1</span>),y_train,x_test.drop(<span class="string">'Embarked'</span>,axis = <span class="number">1</span>),ans,str(len(l) + <span class="number">5</span>))</span><br><span class="line">    ans = RandomForest(x_train.drop(<span class="string">'Family_size'</span>,axis = <span class="number">1</span>),y_train,x_test.drop(<span class="string">'Family_size'</span>,axis = <span class="number">1</span>),ans,str(len(l) + <span class="number">6</span>))</span><br><span class="line">    ans = RandomForest(x_train.drop(<span class="string">'Fare_group'</span>,axis = <span class="number">1</span>),y_train,x_test.drop(<span class="string">'Fare_group'</span>,axis = <span class="number">1</span>),ans,str(len(l) + <span class="number">7</span>))</span><br><span class="line">    ans = RandomForest(x_train.drop(<span class="string">'Age_group'</span>,axis = <span class="number">1</span>),y_train,x_test.drop(<span class="string">'Age_group'</span>,axis = <span class="number">1</span>),ans,str(len(l) + <span class="number">8</span>))</span><br><span class="line">    ans = RandomForest(x_train.drop(<span class="string">'Pclass'</span>,axis = <span class="number">1</span>),y_train,x_test.drop(<span class="string">'Pclass'</span>,axis = <span class="number">1</span>),ans,str(len(l) + <span class="number">9</span>))</span><br><span class="line">    ans = RandomForest(x_train.drop(<span class="string">'Fare'</span>,axis = <span class="number">1</span>),y_train,x_test.drop(<span class="string">'Fare'</span>,axis = <span class="number">1</span>),ans,str(len(l) + <span class="number">10</span>))</span><br><span class="line">    ans = RandomForest(x_train,y_train,x_test,ans,str(len(l) + <span class="number">11</span>))</span><br><span class="line">    ans = RandomForest(x_train,y_train,x_test,ans,str(len(l) + <span class="number">12</span>))</span><br><span class="line">    ans = RandomForest(x_train,y_train,x_test,ans,str(len(l) + <span class="number">13</span>))</span><br><span class="line">    ans = RandomForest(x_train,y_train,x_test,ans,str(len(l) + <span class="number">14</span>))</span><br><span class="line">    ans[<span class="string">'Sum'</span>] = ans.apply(<span class="keyword">lambda</span> x:x.sum(),axis = <span class="number">1</span>)</span><br><span class="line">    ans[<span class="string">'Sum'</span>] = ans[<span class="string">'Sum'</span>] - ans[<span class="string">'PassengerId'</span>]</span><br><span class="line">    ans[<span class="string">'Survived'</span>] = ans[<span class="string">'Sum'</span>].apply(<span class="keyword">lambda</span> x: <span class="number">1</span> <span class="keyword">if</span> x &gt;= <span class="number">18</span> <span class="keyword">else</span> <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">for</span> idx <span class="keyword">in</span> range(<span class="number">27</span>):</span><br><span class="line">        ans.drop(str(idx),inplace = <span class="keyword">True</span>,axis = <span class="number">1</span>)</span><br><span class="line">    ans.drop(<span class="string">'Sum'</span>,inplace = <span class="keyword">True</span>,axis = <span class="number">1</span>)</span><br><span class="line">    print(ans.head(<span class="number">10</span>))</span><br><span class="line">    ans.to_csv(<span class="string">'V2.X2.csv'</span>,index = <span class="keyword">False</span>)</span><br></pre></td></tr></table></figure>
+<p>上述代码部分省略了数据的预处理部分</p>
+<p>上述模型在kaggle上为0.799</p>
+<p>kaggle上面震荡大约在0.770~0.799(可能再偏低点或偏高点)</p>
+<h2 id="V3-1"><a href="#V3-1" class="headerlink" title="V3"></a>V3</h2><p>随机森林训练：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'Pclass'</span>,<span class="string">'Fare'</span>],</span><br><span class="line">[<span class="string">'Pclass'</span>,<span class="string">'Fare_group'</span>],</span><br><span class="line">[<span class="string">'Age_group'</span>,<span class="string">'Family_size'</span>],</span><br><span class="line">[<span class="string">'Age_group'</span>,<span class="string">'Name'</span>,<span class="string">'Surname'</span>],</span><br><span class="line">[<span class="string">'Family_size'</span>,<span class="string">'Surname'</span>,<span class="string">'Name'</span>],</span><br><span class="line">[<span class="string">'Fare_group'</span>,<span class="string">'Fare'</span>],</span><br><span class="line">[<span class="string">'Pclass'</span>,<span class="string">'Age_group'</span>,<span class="string">'Fare'</span>,<span class="string">'Fare_group'</span>],</span><br><span class="line">[<span class="string">'Surname'</span>,<span class="string">'Name'</span>],</span><br><span class="line">[<span class="string">'Pclass'</span>,<span class="string">'Family_size'</span>],</span><br><span class="line">[all - 两种属性的所有组合],</span><br><span class="line">[all - 单种属性],</span><br><span class="line">[all] * <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd<span class="comment">#导入数据文件</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np<span class="comment">#科学计算计算库</span></span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt<span class="comment">#数据可视化库</span></span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"><span class="keyword">import</span> pandas_profiling <span class="keyword">as</span> ppf<span class="comment">#eda</span></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> LabelEncoder<span class="comment">#标签编码</span></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> MinMaxScaler<span class="comment">#归一化</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split<span class="comment">#数据集的划分</span></span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression<span class="comment">#算法</span></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> mean_absolute_error<span class="comment">#评估函数</span></span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> DataFrame <span class="keyword">as</span> df</span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> GradientBoostingClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> ExtraTreesClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> AdaBoostClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> roc_auc_score</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_classification</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delete_data</span><span class="params">(train,test,name)</span>:</span></span><br><span class="line">    train.drop(name,axis=<span class="number">1</span>,inplace = <span class="keyword">True</span>)</span><br><span class="line">    test.drop(name,axis=<span class="number">1</span>,inplace = <span class="keyword">True</span> )</span><br><span class="line">    <span class="keyword">return</span> train,test</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lab_data</span><span class="params">(lab,train,test,name)</span>:</span></span><br><span class="line">    train[name] = lab.fit_transform(train[name])</span><br><span class="line">    print(lab.classes_)</span><br><span class="line">    test[name] = lab.fit_transform(test[name])</span><br><span class="line">    print(lab.classes_)</span><br><span class="line">    <span class="keyword">return</span> train,test</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">minmax_data</span><span class="params">(minmax,train,test,name)</span>:</span></span><br><span class="line">    train[name] = minmax.fit_transform(np.array(train[name]).reshape(<span class="number">-1</span>,<span class="number">1</span>))</span><br><span class="line">    test[name] = minmax.fit_transform(np.array(test[name]).reshape(<span class="number">-1</span>,<span class="number">1</span>))</span><br><span class="line">    <span class="keyword">return</span> train,test</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calcWOE</span><span class="params">(dataset,col,targe)</span>:</span></span><br><span class="line">    subdata=df(dataset.groupby(col)[col].count())</span><br><span class="line">    suby=df(dataset.groupby(col)[targe].sum())</span><br><span class="line">    data=df(pd.merge(subdata,suby,how=<span class="string">"left"</span>,left_index=<span class="keyword">True</span>,right_index=<span class="keyword">True</span>))</span><br><span class="line">    b_total=data[targe].sum()</span><br><span class="line">    total=data[col].sum()</span><br><span class="line">    g_total=total-b_total</span><br><span class="line">    data[<span class="string">"bad"</span>]=data.apply(<span class="keyword">lambda</span> x:round(x[targe]/b_total,<span class="number">3</span>),axis=<span class="number">1</span>)</span><br><span class="line">    data[<span class="string">"good"</span>]=data.apply(<span class="keyword">lambda</span> x:round((x[col]-x[targe])/g_total,<span class="number">3</span>),axis=<span class="number">1</span>)</span><br><span class="line">    data[<span class="string">"WOE"</span>]=data.apply(<span class="keyword">lambda</span> x:np.log(x.bad/x.good),axis=<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> data.loc[:,[<span class="string">"bad"</span>,<span class="string">"good"</span>,<span class="string">"WOE"</span>]]</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calcIV</span><span class="params">(dataset)</span>:</span></span><br><span class="line">    dataset[<span class="string">"IV"</span>]=dataset.apply(<span class="keyword">lambda</span> x:(x.bad-x.good)*x.WOE,axis=<span class="number">1</span>)</span><br><span class="line">    print(dataset)</span><br><span class="line">    print(dataset[<span class="string">'IV'</span>].sum())</span><br><span class="line">    IV=sum(dataset[<span class="string">"IV"</span>])</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ready_data</span><span class="params">(x,test,name)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x[name],test[name]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">RandomForest</span><span class="params">(x,y,test,ans,idx)</span>:</span></span><br><span class="line">    clf = RandomForestClassifier(n_estimators = <span class="number">100</span>)</span><br><span class="line">    clf.fit(x,y)</span><br><span class="line">    ans[idx] = clf.predict(test)</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show_acc</span><span class="params">(ans,con)</span>:</span></span><br><span class="line">    ans[<span class="string">'Survived'</span>] = ans[<span class="string">'Sum'</span>].apply(<span class="keyword">lambda</span> x: <span class="number">1</span> <span class="keyword">if</span> x &gt;= con <span class="keyword">else</span> <span class="number">0</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">#print(ans.head(10))</span></span><br><span class="line">    sums = <span class="number">0</span></span><br><span class="line">    alls = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> idx <span class="keyword">in</span> ans.index:</span><br><span class="line">        <span class="keyword">if</span> ans[<span class="string">'PassengerId'</span>][idx] == ans[<span class="string">'Survived'</span>][idx]:</span><br><span class="line">            sums = sums + <span class="number">1</span></span><br><span class="line">        alls = alls + <span class="number">1</span></span><br><span class="line">    print(con,sums,alls,sums/alls)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    train = pd.read_csv(<span class="string">r'trainX.csv'</span>)</span><br><span class="line">    test = pd.read_csv(<span class="string">r'testX.csv'</span>)</span><br><span class="line">    train_ = pd.read_csv(<span class="string">r'E:\502\kaggle\get_starts\titanic\data\train.csv'</span>)</span><br><span class="line">    test_ = pd.read_csv(<span class="string">r'E:\502\kaggle\get_starts\titanic\data\test.csv'</span>)</span><br><span class="line">    test_[<span class="string">'Fare'</span>] = test_[<span class="string">'Fare'</span>].fillna(np.mean(train_[<span class="string">'Fare'</span>]))</span><br><span class="line">    <span class="comment">#test.info()</span></span><br><span class="line">    pd.set_option(<span class="string">'display.max_columns'</span>,<span class="keyword">None</span>)</span><br><span class="line">    <span class="comment">#train['Name_size'] = train_['Name'].str.len()</span></span><br><span class="line">    <span class="comment">#test['Name_size'] = test_['Name'].str.len()</span></span><br><span class="line">    train,test = delete_data(train,test,<span class="string">'SibSp'</span>)</span><br><span class="line">    train,test = delete_data(train,test,<span class="string">'Parch'</span>)</span><br><span class="line">    train,test = delete_data(train,test,<span class="string">'Cabin'</span>)</span><br><span class="line">    <span class="comment">#train['Alone'] = train['Family_size'].apply(lambda x:1 if x &gt;= 1 else 0)</span></span><br><span class="line">    <span class="comment">#test['Alone'] = test['Family_size'].apply(lambda x:2 if x &gt;= 1 else 0)</span></span><br><span class="line">    train.info()</span><br><span class="line">    test.info()</span><br><span class="line">    </span><br><span class="line">    PassengerId = test[<span class="string">'PassengerId'</span>]</span><br><span class="line">    train,test = delete_data(train,test,<span class="string">'PassengerId'</span>)</span><br><span class="line">    x = train.drop(<span class="string">'Survived'</span>,axis = <span class="number">1</span>)</span><br><span class="line">    y = train[<span class="string">'Survived'</span>]</span><br><span class="line">    x_train,x_test,y_train,y_test = train_test_split(x,y,test_size = <span class="number">0.2</span>,random_state = <span class="number">10</span>)</span><br><span class="line">    <span class="comment">#print(y_test)</span></span><br><span class="line">    ans = pd.DataFrame(&#123;<span class="string">'PassengerId'</span>:PassengerId&#125;)</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    lx = [[<span class="string">'Pclass'</span>,<span class="string">'Fare'</span>],</span><br><span class="line">         [<span class="string">'Pclass'</span>,<span class="string">'Fare_group'</span>],</span><br><span class="line">         [<span class="string">'Age_group'</span>,<span class="string">'Family_size'</span>],</span><br><span class="line">         [<span class="string">'Age_group'</span>,<span class="string">'Name'</span>,<span class="string">'Surname'</span>],</span><br><span class="line">         [<span class="string">'Family_size'</span>,<span class="string">'Surname'</span>,<span class="string">'Name'</span>],</span><br><span class="line">         [<span class="string">'Fare_group'</span>,<span class="string">'Fare'</span>],</span><br><span class="line">         [<span class="string">'Pclass'</span>,<span class="string">'Age_group'</span>,<span class="string">'Fare'</span>,<span class="string">'Fare_group'</span>],</span><br><span class="line">         [<span class="string">'Surname'</span>,<span class="string">'Name'</span>],</span><br><span class="line">         [<span class="string">'Pclass'</span>,<span class="string">'Family_size'</span>]]</span><br><span class="line">    </span><br><span class="line">    x_test = test</span><br><span class="line">    x_train = x</span><br><span class="line">    y_train = y</span><br><span class="line">    l = [<span class="string">'Pclass'</span>,<span class="string">'Name'</span>,<span class="string">'Sex'</span>,<span class="string">'Embarked'</span>,<span class="string">'Surname'</span>,<span class="string">'Family_size'</span>,<span class="string">'Fare_group'</span>,<span class="string">'Fare'</span>,<span class="string">'Age_group'</span>]</span><br><span class="line">    icount = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> idx <span class="keyword">in</span> range(len(l)):</span><br><span class="line">        <span class="keyword">for</span> idy <span class="keyword">in</span> range(idx + <span class="number">1</span>,len(l)):</span><br><span class="line">            ans = RandomForest(x_train.drop([l[idx],l[idy]],axis = <span class="number">1</span>),y_train,x_test.drop([l[idx],l[idy]],axis = <span class="number">1</span>),ans,str(icount))</span><br><span class="line">            icount = icount + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> idx <span class="keyword">in</span> range(len(lx)):</span><br><span class="line">        print(lx[idx])</span><br><span class="line">        n_x,n_t = ready_data(x_train,x_test,lx[idx])</span><br><span class="line">        ans = RandomForest(n_x,y_train,n_t,ans,str(icount))</span><br><span class="line">        icount = icount + <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    ans = RandomForest(x_train.drop(<span class="string">'Name'</span>,axis = <span class="number">1</span>),y_train,x_test.drop(<span class="string">'Name'</span>,axis = <span class="number">1</span>),ans,str(icount))</span><br><span class="line">    ans = RandomForest(x_train.drop(<span class="string">'Surname'</span>,axis = <span class="number">1</span>),y_train,x_test.drop(<span class="string">'Surname'</span>,axis = <span class="number">1</span>),ans,str(icount + <span class="number">1</span>))</span><br><span class="line">    <span class="comment">#ans = RandomForest(x_train.drop('SibSp',axis = 1),y_train,x_test.drop('SibSp',axis = 1),ans,str(len(l) + 2))</span></span><br><span class="line">    <span class="comment">#ans = RandomForest(x_train.drop('Alone',axis = 1),y_train,x_test.drop('Alone',axis = 1),ans,str(icount + 11))</span></span><br><span class="line">    <span class="comment">#ans = RandomForest(x_train.drop('Name_size',axis = 1),y_train,x_test.drop('Name_size',axis = 1),ans,str(icount + 10))</span></span><br><span class="line">    ans = RandomForest(x_train.drop(<span class="string">'Embarked'</span>,axis = <span class="number">1</span>),y_train,x_test.drop(<span class="string">'Embarked'</span>,axis = <span class="number">1</span>),ans,str(icount + <span class="number">2</span>))</span><br><span class="line">    ans = RandomForest(x_train.drop(<span class="string">'Family_size'</span>,axis = <span class="number">1</span>),y_train,x_test.drop(<span class="string">'Family_size'</span>,axis = <span class="number">1</span>),ans,str(icount + <span class="number">3</span>))</span><br><span class="line">    ans = RandomForest(x_train.drop(<span class="string">'Fare_group'</span>,axis = <span class="number">1</span>),y_train,x_test.drop(<span class="string">'Fare_group'</span>,axis = <span class="number">1</span>),ans,str(icount + <span class="number">4</span>))</span><br><span class="line">    ans = RandomForest(x_train.drop(<span class="string">'Age_group'</span>,axis = <span class="number">1</span>),y_train,x_test.drop(<span class="string">'Age_group'</span>,axis = <span class="number">1</span>),ans,str(icount + <span class="number">5</span>))</span><br><span class="line">    ans = RandomForest(x_train.drop(<span class="string">'Pclass'</span>,axis = <span class="number">1</span>),y_train,x_test.drop(<span class="string">'Pclass'</span>,axis = <span class="number">1</span>),ans,str(icount + <span class="number">6</span>))</span><br><span class="line">    ans = RandomForest(x_train.drop(<span class="string">'Fare'</span>,axis = <span class="number">1</span>),y_train,x_test.drop(<span class="string">'Fare'</span>,axis = <span class="number">1</span>),ans,str(icount + <span class="number">7</span>))</span><br><span class="line">    </span><br><span class="line">    ans = RandomForest(x_train,y_train,x_test,ans,str(icount + <span class="number">8</span>))</span><br><span class="line">    ans = RandomForest(x_train,y_train,x_test,ans,str(icount + <span class="number">9</span>))</span><br><span class="line">    <span class="comment">#ans = RandomForest(x_train,y_train,x_test,ans,str(len(l) + 13))</span></span><br><span class="line">    <span class="comment">#ans = RandomForest(x_train,y_train,x_test,ans,str(len(l) + 14))</span></span><br><span class="line">    ans[<span class="string">'Sum'</span>] = ans.apply(<span class="keyword">lambda</span> x:x.sum(),axis = <span class="number">1</span>)</span><br><span class="line">    ans[<span class="string">'Sum'</span>] = ans[<span class="string">'Sum'</span>] - ans[<span class="string">'PassengerId'</span>]</span><br><span class="line">    ans[<span class="string">'Survived'</span>] = ans[<span class="string">'Sum'</span>].apply(<span class="keyword">lambda</span> x: <span class="number">1</span> <span class="keyword">if</span> x &gt;= <span class="number">41</span> <span class="keyword">else</span> <span class="number">0</span>)</span><br><span class="line">    <span class="comment">#for idx in range(icount + 10):</span></span><br><span class="line">    <span class="comment">#    show_acc(ans,idx)</span></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> idx <span class="keyword">in</span> range(icount + <span class="number">10</span>):</span><br><span class="line">        ans.drop(str(idx),inplace = <span class="keyword">True</span>,axis = <span class="number">1</span>)</span><br><span class="line">    ans.drop(<span class="string">'Sum'</span>,inplace = <span class="keyword">True</span>,axis = <span class="number">1</span>)</span><br><span class="line">    print(ans.head(<span class="number">10</span>))</span><br><span class="line">    ans.to_csv(<span class="string">'V3.9.csv'</span>,index = <span class="keyword">False</span>)</span><br></pre></td></tr></table></figure>
+<p>kaggle: 0.80382</p>
+<p>此版本基于V2版本的数据，在kaggle上提交大约会在0.794~0.803左右震荡(可能还会再偏高点或偏低点)</p>
+<h1 id="other"><a href="#other" class="headerlink" title="other"></a>other</h1><p>about IV and WOE:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calcWOE</span><span class="params">(dataset,col,targe)</span>:</span></span><br><span class="line">    subdata=df(dataset.groupby(col)[col].count())</span><br><span class="line">    suby=df(dataset.groupby(col)[targe].sum())</span><br><span class="line">    data=df(pd.merge(subdata,suby,how=<span class="string">"left"</span>,left_index=<span class="keyword">True</span>,right_index=<span class="keyword">True</span>))</span><br><span class="line">    b_total=data[targe].sum()</span><br><span class="line">    total=data[col].sum()</span><br><span class="line">    g_total=total-b_total</span><br><span class="line">    data[<span class="string">"bad"</span>]=data.apply(<span class="keyword">lambda</span> x:round(x[targe]/b_total,<span class="number">3</span>),axis=<span class="number">1</span>)</span><br><span class="line">    data[<span class="string">"good"</span>]=data.apply(<span class="keyword">lambda</span> x:round((x[col]-x[targe])/g_total,<span class="number">3</span>),axis=<span class="number">1</span>)</span><br><span class="line">    data[<span class="string">"WOE"</span>]=data.apply(<span class="keyword">lambda</span> x:np.log(x.bad/x.good),axis=<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> data.loc[:,[<span class="string">"bad"</span>,<span class="string">"good"</span>,<span class="string">"WOE"</span>]]</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calcIV</span><span class="params">(dataset)</span>:</span></span><br><span class="line">    dataset[<span class="string">"IV"</span>]=dataset.apply(<span class="keyword">lambda</span> x:(x.bad-x.good)*x.WOE,axis=<span class="number">1</span>)</span><br><span class="line">    IV=sum(dataset[<span class="string">"IV"</span>])</span><br></pre></td></tr></table></figure>
+<p>refer: <a href="https://blog.csdn.net/weixin_38940048/article/details/82316900" target="_blank" rel="noopener">https://blog.csdn.net/weixin_38940048/article/details/82316900</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>作者大大这么好，要不要打赏一下呢</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="llfzllfz 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/ali.png" alt="llfzllfz 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/kaggle/" rel="tag"><i class="fa fa-google"></i> kaggle</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/02/Python爬虫入门_1/" rel="next" title="Python爬虫入门">
+                <i class="fa fa-chevron-left"></i> Python爬虫入门
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/04/22/LeNet/" rel="prev" title="LeNet">
+                LeNet <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/hello.gif" alt="llfzllfz">
+            
+              <p class="site-author-name" itemprop="name">llfzllfz</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://47.104.95.59/" title="http://47.104.95.59/" rel="noopener" target="_blank">NBUTACM</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://ccccchy.top" title="http://ccccchy.top" rel="noopener" target="_blank">陈鸿宇</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://jlinekai.github.io/" title="https://jlinekai.github.io/" rel="noopener" target="_blank">陈凯涛</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://wfh114.github.io/" title="https://wfh114.github.io/" rel="noopener" target="_blank">王发鸿</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://paulvarm.github.io/" title="https://paulvarm.github.io/" rel="noopener" target="_blank">金家熠</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://xor-star.github.io/" title="https://xor-star.github.io/" rel="noopener" target="_blank">郭吕建</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://xiaotufly.github.io/" title="https://xiaotufly.github.io/" rel="noopener" target="_blank">卢婉青</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.csdn.net/qq_43319028" title="https://blog.csdn.net/qq_43319028" rel="noopener" target="_blank">杨开林</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.csdn.net/llfzllfz" title="https://blog.csdn.net/llfzllfz" rel="noopener" target="_blank">个人CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.cnblogs.com/llfz" title="https://www.cnblogs.com/llfz" rel="noopener" target="_blank">个人博客园</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.csdn.net/qq_35234641" title="https://blog.csdn.net/qq_35234641" rel="noopener" target="_blank">梁佳誉</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#data-prepared"><span class="nav-number">1.</span> <span class="nav-text">data_prepared</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PassengerId-ID"><span class="nav-number">1.1.</span> <span class="nav-text">PassengerId (ID)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Survived-是否生存"><span class="nav-number">1.2.</span> <span class="nav-text">Survived (是否生存)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pclass-船舱等级"><span class="nav-number">1.3.</span> <span class="nav-text">Pclass(船舱等级)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Name-姓名"><span class="nav-number">1.4.</span> <span class="nav-text">Name(姓名)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sex（性别）"><span class="nav-number">1.5.</span> <span class="nav-text">Sex（性别）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Age-年龄"><span class="nav-number">1.6.</span> <span class="nav-text">Age(年龄)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SibSp-旁系"><span class="nav-number">1.7.</span> <span class="nav-text">SibSp(旁系)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Parch-直系亲友"><span class="nav-number">1.8.</span> <span class="nav-text">Parch(直系亲友)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ticket-票编号"><span class="nav-number">1.9.</span> <span class="nav-text">Ticket(票编号)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fare-票价"><span class="nav-number">1.10.</span> <span class="nav-text">Fare(票价)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cabin-客舱编号"><span class="nav-number">1.11.</span> <span class="nav-text">Cabin(客舱编号)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Embarked-上船的港口编号"><span class="nav-number">1.12.</span> <span class="nav-text">Embarked(上船的港口编号)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#缺失值处理"><span class="nav-number">2.</span> <span class="nav-text">缺失值处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#V1"><span class="nav-number">2.1.</span> <span class="nav-text">V1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#V2"><span class="nav-number">2.2.</span> <span class="nav-text">V2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优化1（Age）"><span class="nav-number">2.2.1.</span> <span class="nav-text">优化1（Age）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化2（Cabin）"><span class="nav-number">2.2.2.</span> <span class="nav-text">优化2（Cabin）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化3（Embarked）"><span class="nav-number">2.2.3.</span> <span class="nav-text">优化3（Embarked）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化4（Name编码）"><span class="nav-number">2.2.4.</span> <span class="nav-text">优化4（Name编码）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化5（SibSp-和-Parch）"><span class="nav-number">2.2.5.</span> <span class="nav-text">优化5（SibSp 和 Parch）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化6（Name属性提取）"><span class="nav-number">2.2.6.</span> <span class="nav-text">优化6（Name属性提取）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化7（模型优化）"><span class="nav-number">2.2.7.</span> <span class="nav-text">优化7（模型优化）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#V3"><span class="nav-number">2.3.</span> <span class="nav-text">V3</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现"><span class="nav-number">3.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#V1-1"><span class="nav-number">3.1.</span> <span class="nav-text">V1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#V2-1"><span class="nav-number">3.2.</span> <span class="nav-text">V2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#V3-1"><span class="nav-number">3.3.</span> <span class="nav-text">V3</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#other"><span class="nav-number">4.</span> <span class="nav-text">other</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">llfzllfz</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">43k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">1:18</span>
+  
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+-->
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+
+
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function (item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'yDKREyR1vApCirl9RHhcD8w6-gzGzoHsz',
+    appKey: 'WyGH8cWpRvkWpoJO2XtmrAFA',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+  
+
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 雪花特效 -->
+<script type="text/javascript">
+  var windowWidth = $(window).width();
+  if (windowWidth > 480) {
+    document.write('<script type="text/javascript" src="/js/src/snow.js"><\/script>');
+  }
+</script>
+
+</body>
+</html>

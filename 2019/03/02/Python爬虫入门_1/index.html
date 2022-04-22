@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="python爬虫入门学了一下爬虫，感觉云玩家和自己上手还是有去别的 真的看看简单，做起来就有点难了 注意爬虫首先我们要分析它的合法性：当然大部分情况下是合法的毕竟搜索引擎就是最大的爬虫啊但是，如果遇到网站上有明确说明的，例如淘宝，那就最好不要去爬了吧，而且淘宝对于爬虫还是有限制的。 1www.taobao.com/robots.txt 在网站后面加 /robots.txt 就可以知道网站会禁止你爬">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python爬虫入门">
+<meta property="og:url" content="http://llfzllfz.com/2019/03/02/Python爬虫入门_1/index.html">
+<meta property="og:site_name" content="llfzllfz">
+<meta property="og:description" content="python爬虫入门学了一下爬虫，感觉云玩家和自己上手还是有去别的 真的看看简单，做起来就有点难了 注意爬虫首先我们要分析它的合法性：当然大部分情况下是合法的毕竟搜索引擎就是最大的爬虫啊但是，如果遇到网站上有明确说明的，例如淘宝，那就最好不要去爬了吧，而且淘宝对于爬虫还是有限制的。 1www.taobao.com/robots.txt 在网站后面加 /robots.txt 就可以知道网站会禁止你爬">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://llfzllfz.com/2019/03/02/Python爬虫入门_1/网站分析.png">
+<meta property="og:image" content="http://llfzllfz.com/2019/03/02/Python爬虫入门_1/小说名字.png">
+<meta property="og:image" content="http://llfzllfz.com/2019/03/02/Python爬虫入门_1/具体的章节和url.png">
+<meta property="og:image" content="http://llfzllfz.com/2019/03/02/Python爬虫入门_1/第一章.png">
+<meta property="og:updated_time" content="2019-03-02T11:54:46.459Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python爬虫入门">
+<meta name="twitter:description" content="python爬虫入门学了一下爬虫，感觉云玩家和自己上手还是有去别的 真的看看简单，做起来就有点难了 注意爬虫首先我们要分析它的合法性：当然大部分情况下是合法的毕竟搜索引擎就是最大的爬虫啊但是，如果遇到网站上有明确说明的，例如淘宝，那就最好不要去爬了吧，而且淘宝对于爬虫还是有限制的。 1www.taobao.com/robots.txt 在网站后面加 /robots.txt 就可以知道网站会禁止你爬">
+<meta name="twitter:image" content="http://llfzllfz.com/2019/03/02/Python爬虫入门_1/网站分析.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://llfzllfz.com/2019/03/02/Python爬虫入门_1/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Python爬虫入门 | llfzllfz</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">llfzllfz</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://llfzllfz.com/2019/03/02/Python爬虫入门_1/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="llfzllfz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/hello.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="llfzllfz">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python爬虫入门
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-02 18:13:00 / 修改时间：19:54:46" itemprop="dateCreated datePublished" datetime="2019-03-02T18:13:00+08:00">2019-03-02</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/02/Python爬虫入门_1/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/03/02/Python爬虫入门_1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">4.4k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">8 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="python爬虫入门"><a href="#python爬虫入门" class="headerlink" title="python爬虫入门"></a>python爬虫入门</h1><p>学了一下爬虫，感觉云玩家和自己上手还是有去别的</p>
+<p>真的看看简单，做起来就有点难了</p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>爬虫首先我们要分析它的合法性：当然大部分情况下是合法的<br>毕竟搜索引擎就是最大的爬虫啊<br>但是，如果遇到网站上有明确说明的，例如淘宝，那就最好不要去爬了吧，而且淘宝对于爬虫还是有限制的。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">www.taobao.com/robots.txt</span><br></pre></td></tr></table></figure>
+<p>在网站后面加 /robots.txt 就可以知道网站会禁止你爬什么内容。上面的网址就说明了淘宝对于各大爬虫的限制</p>
+<h2 id="库安装"><a href="#库安装" class="headerlink" title="库安装"></a>库安装</h2><p>首先爬虫需要正则表达式和网页分析，因此我们需要导入两个库</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br></pre></td></tr></table></figure>
+<p>但是requests需要自己导入。</p>
+<p>我是在windows上面操作的，因此这里只讲windows上面的步骤：</p>
+<p>​    1、<strong><em>管理员方式</em></strong> 打开cmd, （ Win+R 输入cmd）</p>
+<p>​    2、输入命令行：python -m pip install –upgrade pip (这个是升级pip，如果你的pip已经是最高级请跳过)</p>
+<p>​    3、输入命令行：pip install requests</p>
+<p>然后你就可以看到安装好的界面了</p>
+<h2 id="过程分析"><a href="#过程分析" class="headerlink" title="过程分析"></a>过程分析</h2><p>首先我们要爬取一个网页，那么我们就需要一个网址，因为我比较喜欢看小说，因此就选择了一个小说网站来爬：</p>
+<p><a href="https://www.biquge5.com/25_25502/" target="_blank" rel="noopener">https://www.biquge5.com/25_25502/</a> （我选择的是笔趣阁）</p>
+<p>我们需要对这个网站进行分析：（鼠标右键 - &gt; 查看网页源代码）</p>
+<p><img src="/2019/03/02/Python爬虫入门_1/网站分析.png" alt=""></p>
+<p>我们可以通过这个源码分析分析出一些东西：</p>
+<p>1、找到小说的名称</p>
+<p><img src="/2019/03/02/Python爬虫入门_1/小说名字.png" alt=""></p>
+<p>2、找到小说下面的具体的章节和链接（url）：</p>
+<p><img src="/2019/03/02/Python爬虫入门_1/具体的章节和url.png" alt=""></p>
+<p>3、通过url再进入具体的章节内容，然后再进入网页源代码(第一章为例)：</p>
+<p><img src="/2019/03/02/Python爬虫入门_1/第一章.png" alt=""></p>
+<p>4、找到其中的正文内容就可以导出来了</p>
+<p>当然网页的分析需要正则表达式</p>
+<h2 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h2><p>这里通过 re.findall（） 来实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">re.findall(p,string)</span><br><span class="line"><span class="comment"># 以list的形式返回string中所有与p相匹配的字符串</span></span><br></pre></td></tr></table></figure>
+<p>这个需要库re</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br></pre></td></tr></table></figure>
+<p>re.findall ( )  查找全部r标识代表后面是正则的语句</p>
+<p>下面举一个小小的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">p = <span class="string">'hello world'</span></span><br><span class="line">print(re.findall(<span class="string">r'hello'</span>,p))</span><br></pre></td></tr></table></figure>
+<p>得到结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'hello'</span>]</span><br></pre></td></tr></table></figure>
+<h3 id=""><a href="#" class="headerlink" title="(.*?)"></a>(.*?)</h3><p>这个可以匹配所有字符(长度不限)：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">p = <span class="string">'hello world'</span></span><br><span class="line">print(re.findall(<span class="string">r'hello(.*?)d'</span>,p))</span><br></pre></td></tr></table></figure>
+<p>得到结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">' worl'</span>]</span><br><span class="line"><span class="comment"># 这个得到的是hello和d之间所有的字符</span></span><br></pre></td></tr></table></figure>
+<h3 id="正则end"><a href="#正则end" class="headerlink" title="正则end"></a>正则end</h3><p>觉得<a href="http://www.runoob.com/regexp/regexp-syntax.html" target="_blank" rel="noopener">菜鸟教程中的正则表达式</a>写的挺好的，就不写了，偷懒以下。</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>稍微正式一点了</p>
+<h3 id="请求头"><a href="#请求头" class="headerlink" title="请求头"></a>请求头</h3><p>爬别人的网站你就是模仿浏览器，模仿浏览器发送http请求，但是你需要一个请求头，表示是模仿请求的，不然可能会被封或者无法访问。（当然，很多网站加不加这个请求头是无所谓的）</p>
+<p>我用的是chrome的:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">header = &#123;<span class="string">"User-Agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36"</span>&#125;</span><br><span class="line"><span class="comment"># 不要用 head 定义，否则会报错</span></span><br></pre></td></tr></table></figure>
+<h3 id="requests-get"><a href="#requests-get" class="headerlink" title="requests.get()"></a>requests.get()</h3><p>接下来才是正戏上场</p>
+<p>利用requests.get()获得网页上的内容</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获得一个网址</span></span><br><span class="line">url = <span class="string">'https://www.biquge5.com/25_25502/'</span></span><br><span class="line"><span class="comment"># 请求头，模仿浏览器</span></span><br><span class="line">header = &#123;<span class="string">"User-Agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36"</span>&#125;</span><br><span class="line"><span class="comment"># 发送http请求</span></span><br><span class="line">response = requests.get(url, headers=header)</span><br><span class="line"><span class="comment"># 编码方式</span></span><br><span class="line"><span class="comment"># 关于这个编码，有时候要加上，有时候不要加，自己判断吧</span></span><br><span class="line"><span class="comment"># response.encoding = 'utf-8'</span></span><br><span class="line"><span class="comment"># 目标网页源码</span></span><br><span class="line">html = response.text</span><br><span class="line"><span class="comment"># 小说标题 (re.findall()正则表达式是通过数组的方式传的，因此最后要加一个[0])</span></span><br><span class="line">title = re.findall(<span class="string">r'&lt;h1&gt;(.*?)&lt;/h1&gt;'</span>,html)[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="获得章节url和章节名称"><a href="#获得章节url和章节名称" class="headerlink" title="获得章节url和章节名称"></a>获得章节url和章节名称</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chapter_info_list = re.findall(<span class="string">r'(.*?)"&gt;(.*?)&lt;/a&gt;&lt;/li&gt;&lt;li&gt;'</span>,html)</span><br><span class="line"><span class="comment"># 利用正则表达式来获取内容</span></span><br></pre></td></tr></table></figure>
+<h3 id="重复上面的步骤"><a href="#重复上面的步骤" class="headerlink" title="重复上面的步骤"></a>重复上面的步骤</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> chapter_info <span class="keyword">in</span> chapter_info_list:</span><br><span class="line">    chapter_url,chapter_title = chapter_info</span><br><span class="line">    <span class="comment"># print(chapter_url,chapter_title)</span></span><br><span class="line">    chapter_url = <span class="string">"https://www.biquge5.com/25_25502/%s"</span> % chapter_url</span><br><span class="line">    <span class="comment"># 获得章节所在url源码</span></span><br><span class="line">    chapter_response = requests.get(chapter_url,headers=header)</span><br><span class="line">    <span class="comment"># chapter_response.encoding = 'utf-8'</span></span><br><span class="line">    chapter_html = chapter_response.text</span><br><span class="line">    <span class="comment"># print(chapter_html)</span></span><br><span class="line">    <span class="comment"># break</span></span><br><span class="line">    <span class="comment"># 获得章节内容</span></span><br><span class="line">    chapter_post = re.findall(<span class="string">r'&lt;div id="content"&gt;(.*?)&lt;br /&gt;&lt;br /&gt;&lt;/div&gt;'</span>,chapter_html,re.S)[<span class="number">0</span>]</span><br><span class="line">    <span class="comment"># print(chapter_post)</span></span><br><span class="line">    <span class="comment"># 清洗数据</span></span><br><span class="line">    chapter_post = chapter_post.replace(<span class="string">'&lt;br /&gt;'</span>,<span class="string">'\n'</span>)</span><br><span class="line">    chapter_post = chapter_post.replace(<span class="string">'&amp;nbsp;'</span>,<span class="string">' '</span>)</span><br><span class="line">    chapter_post = chapter_post.replace(<span class="string">'&lt;script&gt;s1();&lt;/script&gt;'</span>,<span class="string">''</span>)</span><br><span class="line">    <span class="comment"># 保存数据</span></span><br><span class="line">    fb.write(chapter_title)</span><br><span class="line">    fb.write(<span class="string">'\n'</span>)</span><br><span class="line">    fb.write(chapter_post)</span><br><span class="line">    <span class="keyword">if</span> re.findall(<span class="string">r'&lt;font color=red&gt;&lt;b&gt;(.*?)&lt;/b&gt;&lt;/font&gt;'</span>,chapter_html):</span><br><span class="line">        chapter_next = re.findall(<span class="string">r'&lt;font color=red&gt;&lt;b&gt;(.*?)&lt;/b&gt;&lt;/font&gt;'</span>,chapter_html)[<span class="number">0</span>]</span><br><span class="line"><span class="comment"># 为什么用while？因为有时候一个下一页，所以需要while特判是否有下一页</span></span><br><span class="line">        <span class="keyword">while</span> chapter_next == <span class="string">'下一章'</span>:</span><br><span class="line">            <span class="keyword">if</span> re.findall(<span class="string">r'&lt;a href="(.*?)"&gt;下一页&lt;/a&gt;'</span>,chapter_html):</span><br><span class="line">                chapter_url = re.findall(<span class="string">r'&lt;a href="(.*?)"&gt;下一页&lt;/a&gt;'</span>,chapter_html)[<span class="number">0</span>]</span><br><span class="line">                chapter_url = <span class="string">"https://www.biquge5.com/25_25502/%s"</span> % chapter_url</span><br><span class="line">                chapter_response = requests.get(chapter_url,headers=header)</span><br><span class="line">                chapter_html = chapter_response.text</span><br><span class="line">                chapter_post =  chapter_post = re.findall(<span class="string">r'&lt;div id="content"&gt;(.*?)&lt;br /&gt;&lt;br /&gt;&lt;/div&gt;'</span>,chapter_html,re.S)[<span class="number">0</span>]</span><br><span class="line">                chapter_post = chapter_post.replace(<span class="string">'&lt;br /&gt;'</span>,<span class="string">'\n'</span>)</span><br><span class="line">                chapter_post = chapter_post.replace(<span class="string">'&amp;nbsp;'</span>,<span class="string">' '</span>)</span><br><span class="line">                chapter_post = chapter_post.replace(<span class="string">'&lt;script&gt;s1();&lt;/script&gt;'</span>,<span class="string">''</span>)</span><br><span class="line">                chapter_next = re.findall(<span class="string">r'&lt;font color=red&gt;&lt;b&gt;(.*?)&lt;/b&gt;&lt;/font&gt;'</span>,chapter_html)[<span class="number">0</span>]</span><br><span class="line">                fb.write(chapter_post)</span><br><span class="line">                fb.write(<span class="string">'\n'</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="comment"># print(chapter_post)</span></span><br></pre></td></tr></table></figure>
+<h1 id="End"><a href="#End" class="headerlink" title="End"></a>End</h1><p>第一次爬虫，感觉还是有点有趣，但是不懂得地方还有很多。</p>
+<p>本来是打算爬新笔趣阁的，但是新笔趣阁通过requests.get()得到的源码有失真，有一部分正文内容缺失了，估计做了特殊的处理，因此需要后续继续学习，像什么动态网页的爬取之类…………</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>作者大大这么好，要不要打赏一下呢</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="llfzllfz 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/ali.png" alt="llfzllfz 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"><i class="fa fa-google"></i> python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/24/置换/" rel="next" title="置换">
+                <i class="fa fa-chevron-left"></i> 置换
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/26/Titanic/" rel="prev" title="Titanic">
+                Titanic <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/hello.gif" alt="llfzllfz">
+            
+              <p class="site-author-name" itemprop="name">llfzllfz</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://47.104.95.59/" title="http://47.104.95.59/" rel="noopener" target="_blank">NBUTACM</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://ccccchy.top" title="http://ccccchy.top" rel="noopener" target="_blank">陈鸿宇</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://jlinekai.github.io/" title="https://jlinekai.github.io/" rel="noopener" target="_blank">陈凯涛</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://wfh114.github.io/" title="https://wfh114.github.io/" rel="noopener" target="_blank">王发鸿</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://paulvarm.github.io/" title="https://paulvarm.github.io/" rel="noopener" target="_blank">金家熠</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://xor-star.github.io/" title="https://xor-star.github.io/" rel="noopener" target="_blank">郭吕建</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://xiaotufly.github.io/" title="https://xiaotufly.github.io/" rel="noopener" target="_blank">卢婉青</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.csdn.net/qq_43319028" title="https://blog.csdn.net/qq_43319028" rel="noopener" target="_blank">杨开林</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.csdn.net/llfzllfz" title="https://blog.csdn.net/llfzllfz" rel="noopener" target="_blank">个人CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.cnblogs.com/llfz" title="https://www.cnblogs.com/llfz" rel="noopener" target="_blank">个人博客园</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.csdn.net/qq_35234641" title="https://blog.csdn.net/qq_35234641" rel="noopener" target="_blank">梁佳誉</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#python爬虫入门"><span class="nav-number">1.</span> <span class="nav-text">python爬虫入门</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#注意"><span class="nav-number">1.1.</span> <span class="nav-text">注意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#库安装"><span class="nav-number">1.2.</span> <span class="nav-text">库安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#过程分析"><span class="nav-number">1.3.</span> <span class="nav-text">过程分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正则表达式"><span class="nav-number">1.4.</span> <span class="nav-text">正则表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.4.1.</span> <span class="nav-text">(.*?)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则end"><span class="nav-number">1.4.2.</span> <span class="nav-text">正则end</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码实现"><span class="nav-number">1.5.</span> <span class="nav-text">代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#请求头"><span class="nav-number">1.5.1.</span> <span class="nav-text">请求头</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#requests-get"><span class="nav-number">1.5.2.</span> <span class="nav-text">requests.get()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获得章节url和章节名称"><span class="nav-number">1.5.3.</span> <span class="nav-text">获得章节url和章节名称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重复上面的步骤"><span class="nav-number">1.5.4.</span> <span class="nav-text">重复上面的步骤</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#End"><span class="nav-number">2.</span> <span class="nav-text">End</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">llfzllfz</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">43k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">1:18</span>
+  
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+-->
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+
+
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function (item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'yDKREyR1vApCirl9RHhcD8w6-gzGzoHsz',
+    appKey: 'WyGH8cWpRvkWpoJO2XtmrAFA',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+  
+
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 雪花特效 -->
+<script type="text/javascript">
+  var windowWidth = $(window).width();
+  if (windowWidth > 480) {
+    document.write('<script type="text/javascript" src="/js/src/snow.js"><\/script>');
+  }
+</script>
+
+</body>
+</html>
