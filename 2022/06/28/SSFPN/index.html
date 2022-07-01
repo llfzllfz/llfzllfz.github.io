@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="SSFPN论文地址：https://arxiv.org/abs/2206.07298 论文中项目地址：https://github.com/mohamedac29/S2-FPN/ 自己实现的项目地址：https://github.com/llfzllfz/DL_Exercise/tree/main/SSFPN 模型纵览  上面两个模型讲述了SSFPN的模型总体结构。 Overview根据上面图片中">
+<meta name="keywords" content="DL_Net_Exercise">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSFPN">
+<meta property="og:url" content="http://llfzllfz.com/2022/06/28/SSFPN/index.html">
+<meta property="og:site_name" content="llfzllfz">
+<meta property="og:description" content="SSFPN论文地址：https://arxiv.org/abs/2206.07298 论文中项目地址：https://github.com/mohamedac29/S2-FPN/ 自己实现的项目地址：https://github.com/llfzllfz/DL_Exercise/tree/main/SSFPN 模型纵览  上面两个模型讲述了SSFPN的模型总体结构。 Overview根据上面图片中">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://llfzllfz.com/2022/06/28/SSFPN/overview.png">
+<meta property="og:image" content="http://llfzllfz.com/2022/06/28/SSFPN/overview2.png">
+<meta property="og:image" content="http://llfzllfz.com/2022/06/28/SSFPN/SSAM.png">
+<meta property="og:image" content="http://llfzllfz.com/2022/06/28/SSFPN/APF.png">
+<meta property="og:image" content="http://llfzllfz.com/2022/06/28/SSFPN/GFU.png">
+<meta property="og:image" content="http://llfzllfz.com/2022/06/28/SSFPN/origin_image.png">
+<meta property="og:image" content="http://llfzllfz.com/2022/06/28/SSFPN/origin_label.png">
+<meta property="og:image" content="http://llfzllfz.com/2022/06/28/SSFPN/result.png">
+<meta property="og:image" content="http://llfzllfz.com/2022/06/28/SSFPN/pre_image.png">
+<meta property="og:image" content="http://llfzllfz.com/2022/06/28/SSFPN/pre.png">
+<meta property="og:updated_time" content="2022-07-01T12:05:21.028Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SSFPN">
+<meta name="twitter:description" content="SSFPN论文地址：https://arxiv.org/abs/2206.07298 论文中项目地址：https://github.com/mohamedac29/S2-FPN/ 自己实现的项目地址：https://github.com/llfzllfz/DL_Exercise/tree/main/SSFPN 模型纵览  上面两个模型讲述了SSFPN的模型总体结构。 Overview根据上面图片中">
+<meta name="twitter:image" content="http://llfzllfz.com/2022/06/28/SSFPN/overview.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://llfzllfz.com/2022/06/28/SSFPN/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>SSFPN | llfzllfz</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">llfzllfz</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://llfzllfz.com/2022/06/28/SSFPN/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="llfzllfz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/hello.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="llfzllfz">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SSFPN
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2022-06-28 14:49:13" itemprop="dateCreated datePublished" datetime="2022-06-28T14:49:13+08:00">2022-06-28</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2022-07-01 20:05:21" itemprop="dateModified" datetime="2022-07-01T20:05:21+08:00">2022-07-01</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2022/06/28/SSFPN/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2022/06/28/SSFPN/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/2022/06/28/SSFPN/" class="leancloud_visitors" data-flag-title="SSFPN">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">9.9k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">18 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="SSFPN"><a href="#SSFPN" class="headerlink" title="SSFPN"></a>SSFPN</h1><p>论文地址：<a href="https://arxiv.org/abs/2206.07298" target="_blank" rel="noopener">https://arxiv.org/abs/2206.07298</a></p>
+<p>论文中项目地址：<a href="https://github.com/mohamedac29/S2-FPN/" target="_blank" rel="noopener">https://github.com/mohamedac29/S2-FPN/</a></p>
+<p>自己实现的项目地址：<a href="https://github.com/llfzllfz/DL_Exercise/tree/main/SSFPN" target="_blank" rel="noopener">https://github.com/llfzllfz/DL_Exercise/tree/main/SSFPN</a></p>
+<h2 id="模型纵览"><a href="#模型纵览" class="headerlink" title="模型纵览"></a>模型纵览</h2><p><img src="/2022/06/28/SSFPN/overview.png" alt=""></p>
+<p><img src="/2022/06/28/SSFPN/overview2.png" alt=""></p>
+<p>上面两个模型讲述了SSFPN的模型总体结构。</p>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>根据上面图片中的描述，就可以得到模型的总体结构，模型分为三个部分：</p>
+<ul>
+<li>特征抽取或编码</li>
+<li>注意力金字塔融合（APF）</li>
+<li>全局特征上采样（GFU）</li>
+</ul>
+<p>其中分别包括了CFGB，FAB，SSAM。</p>
+<p>SSFPN采用resnet18或者resnet34作为基础的model，去掉其中的全局平均池化层以及softmax，根据基础模型的步长取出对应的特征。步长为2，4，8，16，32的情况下，得到F1，F2，F3，F4，F5。</p>
+<p>在F5之后分别接两个模块：</p>
+<ul>
+<li>粗糙特征生成块（CFGB）<ul>
+<li>包含一个步长为2的卷积层来生成粗糙特征，目的是为了APF做准备</li>
+</ul>
+</li>
+<li>特征适应块（FAB）<ul>
+<li>包含一个步长为1的卷积层来为GFU做准备</li>
+</ul>
+</li>
+</ul>
+<p>注意：APF中步长分别为4，8，16，32。</p>
+<p>APF2，APF3，APF4，APF5是从上到下的特征生成，使用APF模块。</p>
+<h3 id="Code-SSFPN"><a href="#Code-SSFPN" class="headerlink" title="Code-SSFPN"></a>Code-SSFPN</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SSFPN</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, backbone, classes = <span class="number">1</span>, pretrained = True)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self.backbone = backbone.lower()</span><br><span class="line">        self.pretrained = pretrained</span><br><span class="line">        self.encoder, self.out_channels = self.get_backbone_layer()</span><br><span class="line">        </span><br><span class="line">        self.conv1_x = self.encoder.conv1</span><br><span class="line">        self.bn1 = self.encoder.bn1</span><br><span class="line">        self.relu = self.encoder.relu</span><br><span class="line">        self.maxpool = self.encoder.maxpool</span><br><span class="line">        self.conv2_x = self.encoder.layer1</span><br><span class="line">        self.conv3_x = self.encoder.layer2</span><br><span class="line">        self.conv4_x = self.encoder.layer3</span><br><span class="line">        self.conv5_x = self.encoder.layer4</span><br><span class="line">        self.fab = nn.Sequential(</span><br><span class="line">            conv_block(in_channels=self.out_channels, out_channels=self.out_channels // <span class="number">2</span>, kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>, use_bn_act=<span class="keyword">True</span>)</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        self.cfgb = nn.Sequential(</span><br><span class="line">            conv_block(in_channels=self.out_channels, out_channels=self.out_channels, kernel_size=<span class="number">3</span>, stride=<span class="number">2</span>, padding=<span class="number">1</span>, use_bn_act=<span class="keyword">True</span>)</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        self.apf5 = APF(self.out_channels, self.out_channels, self.out_channels // <span class="number">2</span>, classes=classes)</span><br><span class="line">        self.apf4 = APF(self.out_channels // <span class="number">2</span>, self.out_channels // <span class="number">2</span>, self.out_channels // <span class="number">4</span>, classes=classes)</span><br><span class="line">        self.apf3 = APF(self.out_channels // <span class="number">4</span>, self.out_channels // <span class="number">4</span>, self.out_channels // <span class="number">8</span>, classes=classes)</span><br><span class="line">        self.apf2 = APF(self.out_channels // <span class="number">8</span>, self.out_channels // <span class="number">8</span>, self.out_channels // <span class="number">16</span>, classes=classes)</span><br><span class="line"></span><br><span class="line">        self.gfu5 = GFU(self.out_channels // <span class="number">2</span>, self.out_channels // <span class="number">2</span>, self.out_channels // <span class="number">2</span>)</span><br><span class="line">        self.gfu4 = GFU(self.out_channels // <span class="number">4</span>, self.out_channels // <span class="number">2</span>, self.out_channels // <span class="number">4</span>)</span><br><span class="line">        self.gfu3 = GFU(self.out_channels // <span class="number">8</span>, self.out_channels // <span class="number">4</span>, self.out_channels // <span class="number">8</span>)</span><br><span class="line">        self.gfu2 = GFU(self.out_channels // <span class="number">16</span>, self.out_channels // <span class="number">8</span>, self.out_channels // <span class="number">16</span>)</span><br><span class="line"></span><br><span class="line">        self.classifier = conv_block(self.out_channels // <span class="number">16</span>, classes, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_backbone_layer</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">assert</span> self.backbone == <span class="string">'resnet18'</span> <span class="keyword">or</span> self.backbone == <span class="string">'resnet34'</span> <span class="keyword">or</span> self.backbone == <span class="string">'resnet50'</span>, <span class="string">f'backbone 不符合'</span></span><br><span class="line">        <span class="keyword">if</span> self.backbone == <span class="string">'resnet18'</span>:</span><br><span class="line">            encoder = resnet18(pretrained=self.pretrained)</span><br><span class="line">            out_channels = <span class="number">512</span></span><br><span class="line">        <span class="keyword">if</span> self.backbone == <span class="string">'resnet34'</span>:</span><br><span class="line">            encoder = resnet34(pretrained=self.pretrained)</span><br><span class="line">            out_channels = <span class="number">512</span></span><br><span class="line">        <span class="keyword">if</span> self.backbone == <span class="string">'resnet50'</span>:</span><br><span class="line">            encoder = resnet50(pretrained=self.pretrained)</span><br><span class="line">            out_channels = <span class="number">2048</span></span><br><span class="line">        <span class="keyword">return</span> encoder, out_channels</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        B, C, H, W = x.size()</span><br><span class="line">        x = self.conv1_x(x)</span><br><span class="line">        x = self.bn1(x)</span><br><span class="line">        x = self.relu(x)</span><br><span class="line">        x = self.maxpool(x)</span><br><span class="line">        x2 = self.conv2_x(x)</span><br><span class="line">        x3 = self.conv3_x(x2)</span><br><span class="line">        x4 = self.conv4_x(x3)</span><br><span class="line">        x5 = self.conv5_x(x4)</span><br><span class="line"></span><br><span class="line">        cfgb = self.cfgb(x5)</span><br><span class="line">        fab = self.fab(x5)</span><br><span class="line"></span><br><span class="line">        apf5, cls5 = self.apf5(cfgb, x5)</span><br><span class="line">        apf4, cls4 = self.apf4(apf5, x4)</span><br><span class="line">        apf3, cls3 = self.apf3(apf4, x3)</span><br><span class="line">        apf2, cls2 = self.apf2(apf3, x2)</span><br><span class="line"></span><br><span class="line">        gfu5 = self.gfu5(apf5, fab)</span><br><span class="line">        gfu4 = self.gfu4(apf4, gfu5)</span><br><span class="line">        gfu3 = self.gfu3(apf3, gfu4)</span><br><span class="line">        gfu2 = self.gfu2(apf2, gfu3)</span><br><span class="line"></span><br><span class="line">        cls = self.classifier(gfu2)</span><br><span class="line"></span><br><span class="line">        pre = F.interpolate(cls, size=(H,W), mode=<span class="string">'bilinear'</span>)</span><br><span class="line">        sup5 = F.interpolate(cls5, size=(H,W), mode=<span class="string">'bilinear'</span>)</span><br><span class="line">        sup4 = F.interpolate(cls4, size=(H,W), mode=<span class="string">'bilinear'</span>)</span><br><span class="line">        sup3 = F.interpolate(cls3, size=(H,W), mode=<span class="string">'bilinear'</span>)</span><br><span class="line">        sup2 = F.interpolate(cls2, size=(H,W), mode=<span class="string">'bilinear'</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.training:</span><br><span class="line">            <span class="keyword">return</span> pre, sup5, sup4, sup3, sup2</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> pre</span><br></pre></td></tr></table></figure>
+<h2 id="比例感知注意力模块（SSAM）"><a href="#比例感知注意力模块（SSAM）" class="headerlink" title="比例感知注意力模块（SSAM）"></a>比例感知注意力模块（SSAM）</h2><p><img src="/2022/06/28/SSFPN/SSAM.png" alt=""></p>
+<p>SSAM模块见上方图形，其目的是<strong>为了获得长范围的依赖关系以及减少计算资源的消耗</strong>。</p>
+<ol>
+<li><p>首先用平均池化层（Avg Pool）和最大池化层（Max Pool）分别提取特征，然后过一个权重共享的1*1的卷积层得到F1和F2。</p>
+<p>其中在平均池化和最大池化的时候是按照行进行池化，最后得到(C, H, 1)的size，但是在论文作者的实现中，采用的是按列池化，本项目采用的是按行池化。</p>
+</li>
+<li><p>利用F1和F2得到Attention部分，也就是A＝F１⊙F２</p>
+</li>
+<li><p>然后Attention再过一个softmax</p>
+</li>
+<li><p>最后得到$F_{scale} = A ⊙ F_1 + A ⊙ F_2$</p>
+</li>
+<li><p>SSAM的最后输出为$F_{SSAM} = \alpha F_{scale} + (1 - \alpha)F$</p>
+</li>
+</ol>
+<p>原作者在$F_{scale}$之后又过了一个卷积层，但是在论文中并没有看到相应的描述。</p>
+<h3 id="Code-SSAM"><a href="#Code-SSAM" class="headerlink" title="Code-SSAM"></a>Code-SSAM</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SSAM</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, in_channels, out_channels)</span>:</span></span><br><span class="line">        super(SSAM, self).__init__()</span><br><span class="line">        self.conv_shared = nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=<span class="number">1</span>, stride=<span class="number">1</span>)</span><br><span class="line">        self.bn_shared_max = nn.BatchNorm2d(in_channels)</span><br><span class="line">        self.bn_shared_avg = nn.BatchNorm2d(in_channels)</span><br><span class="line">        self.gamma = nn.Parameter(torch.zeros(<span class="number">1</span>))</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        B, C, H, W = x.size()</span><br><span class="line">        </span><br><span class="line">        max_pool = F.max_pool2d(x, [<span class="number">1</span>, W])</span><br><span class="line">        max_pool = self.conv_shared(max_pool)</span><br><span class="line">        max_pool = self.bn_shared_max(max_pool)</span><br><span class="line"></span><br><span class="line">        avg_pool = F.avg_pool2d(x, [<span class="number">1</span>, W])</span><br><span class="line">        avg_pool = self.conv_shared(avg_pool)</span><br><span class="line">        avg_pool = self.bn_shared_avg(avg_pool)</span><br><span class="line"></span><br><span class="line">        att = torch.softmax(torch.mul(max_pool, avg_pool), <span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        f_scale = att * max_pool + att * avg_pool</span><br><span class="line">        out = F.relu(self.gamma * f_scale + (<span class="number">1</span> - self.gamma) * x)</span><br><span class="line">        <span class="keyword">return</span> out</span><br></pre></td></tr></table></figure>
+<h2 id="注意力金字塔融合模块（APF）"><a href="#注意力金字塔融合模块（APF）" class="headerlink" title="注意力金字塔融合模块（APF）"></a>注意力金字塔融合模块（APF）</h2><p><img src="/2022/06/28/SSFPN/APF.png" alt=""></p>
+<p>APF模块有两个输入，一个是顶层APF的输入($F_{i-1}$)，一个是来自侧层F的输入($F_i$)</p>
+<ol>
+<li><p>$F_{i-1 }$先通过一个带normalization和relu的1*1卷积层，$F_i$通过一个上采样层来适应$F_{ i-1 }$</p>
+</li>
+<li><p>然后再通过concat将这两个输出拼接起来得到$F_{concat}$，同时将这个输入到一个FRB中得到$F_{R}$</p>
+<p>FRB里面包含了1*1和3*3的卷积层，都带着normalization和relu。</p>
+</li>
+<li><p>接下去，将$F_{ i-1 }$经过一个带normalization和relu的3*3的卷积层。</p>
+</li>
+<li><p>$F_{R}$经过一个CAM再与$F_{i -1}$相乘得到输出$F_{A}$</p>
+</li>
+<li><p>$F_{R}$经过一个SSAM与经过一个3*3卷积层的$F_{i}$相乘得到输出$F_{B}$</p>
+</li>
+<li><p>最后得到输出$F_{out} = F_{A} + F_{ B}$ </p>
+</li>
+<li><p>$F_{out}$之后接3*3的卷积层进入到相应的处理模块，例如pre和下一个APF以及相应的GFU</p>
+</li>
+</ol>
+<h3 id="Code-CAM"><a href="#Code-CAM" class="headerlink" title="Code-CAM"></a>Code-CAM</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CAM</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, channel)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self.avg_pool = nn.AdaptiveAvgPool2d(<span class="number">1</span>)</span><br><span class="line">        self.conv1 = conv_block(channel, channel, <span class="number">1</span>, <span class="number">1</span>, use_bn_act=<span class="keyword">False</span>, padding=<span class="number">0</span>)</span><br><span class="line">        self.relu = nn.ReLU()</span><br><span class="line">        self.conv2 = conv_block(channel, channel, <span class="number">1</span>, <span class="number">1</span>, use_bn_act=<span class="keyword">False</span>, padding=<span class="number">0</span>)</span><br><span class="line">        self.sigmoid = nn.Sigmoid()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        redisual = x</span><br><span class="line">        x = self.avg_pool(x)</span><br><span class="line">        x = self.conv1(x)</span><br><span class="line">        x = self.relu(x)</span><br><span class="line">        x = self.conv2(x)</span><br><span class="line">        x = self.sigmoid(x)</span><br><span class="line">        <span class="keyword">return</span> torch.mul(redisual, x)</span><br></pre></td></tr></table></figure>
+<h3 id="Code-APF"><a href="#Code-APF" class="headerlink" title="Code-APF"></a>Code-APF</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">APF</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, channels_high, channels_low, channel_out, classes = <span class="number">1</span>)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self.lateral_low = conv_block(channels_low, channels_high, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, use_bn_act=<span class="keyword">True</span>)</span><br><span class="line">        self.frb = nn.Sequential(</span><br><span class="line">            conv_block(channels_high * <span class="number">2</span>, channel_out, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="keyword">True</span>),</span><br><span class="line">            conv_block(channel_out, channel_out, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="keyword">True</span>)</span><br><span class="line">        )</span><br><span class="line">        self.fc_conv = conv_block(channels_high, channel_out, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="keyword">True</span>)</span><br><span class="line">        self.fs_conv = conv_block(channels_high, channel_out, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="keyword">True</span>)</span><br><span class="line">        self.cam = CAM(channel_out)</span><br><span class="line">        self.ssam = SSAM(channel_out, channel_out)</span><br><span class="line">        self.classifier = conv_block(channel_out, classes, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="keyword">True</span>)</span><br><span class="line">        self.apf = conv_block(channel_out, channel_out, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x_high, x_low)</span>:</span></span><br><span class="line">        x_low = self.lateral_low(x_low)</span><br><span class="line">        x_high = F.interpolate(x_high, size=x_low.size()[<span class="number">2</span>:], mode=<span class="string">'bilinear'</span>)</span><br><span class="line">        f_c = torch.cat([x_low, x_high], <span class="number">1</span>)</span><br><span class="line">        f_r = self.frb(f_c)</span><br><span class="line">        f_a = torch.mul(self.fc_conv(x_low), self.cam(f_r))</span><br><span class="line">        f_b = torch.mul(self.fs_conv(x_high), self.ssam(f_r))</span><br><span class="line">        f_out = f_a + f_b</span><br><span class="line"></span><br><span class="line">        apf = self.apf(f_out)</span><br><span class="line">        classifier = self.classifier(f_out)</span><br><span class="line">        <span class="keyword">return</span> apf, classifier</span><br></pre></td></tr></table></figure>
+<h2 id="全局特征上采样（GFU）"><a href="#全局特征上采样（GFU）" class="headerlink" title="全局特征上采样（GFU）"></a>全局特征上采样（GFU）</h2><p>在模型纵览中的第一张图片中，APF后面接的是Predict，但是在第二张图中，显示的是GFU，同时该模型会输出5个输出。</p>
+<p>其中每个APF后各有一个输出，GFU后还有一个输出，做推理的时候用的是GFU后的输出。</p>
+<p><img src="/2022/06/28/SSFPN/GFU.png" alt=""></p>
+<p>GFU的模型整理来说相对简单。</p>
+<ol>
+<li>FAB经过一个上采样，然后过一个1*1的卷积再做relu和平均池化得到$X_{F}$的输出</li>
+<li>APF经过一个1*1的卷积得到$X_P$的输出</li>
+<li>最后得到$X_{GFU} = （f^1（X_F+ X_P））$，其中$f^1$表示经过一个1*1的卷积层</li>
+</ol>
+<h3 id="Code-GFU"><a href="#Code-GFU" class="headerlink" title="Code-GFU"></a>Code-GFU</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GFU</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, apf_channel, fab_channel, out_channel)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self.apf_conv = conv_block(apf_channel, out_channel, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="keyword">True</span>)</span><br><span class="line">        self.fab_conv = nn.Sequential(</span><br><span class="line">            conv_block(fab_channel, out_channel, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="keyword">False</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.AdaptiveAvgPool2d(<span class="number">1</span>)</span><br><span class="line">        )</span><br><span class="line">        self.out_conv = conv_block(out_channel, out_channel, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, apf, fab)</span>:</span></span><br><span class="line">        B, C, H, W = apf.size()</span><br><span class="line">        apf = self.apf_conv(apf)</span><br><span class="line">        fab = F.interpolate(fab, size=(H, W), mode=<span class="string">'bilinear'</span>)</span><br><span class="line">        fab = self.fab_conv(fab)</span><br><span class="line">        f_out = apf + fab</span><br><span class="line">        f_out = self.out_conv(f_out)</span><br><span class="line">        <span class="keyword">return</span> f_out</span><br></pre></td></tr></table></figure>
+<h2 id="Code-Conv-block"><a href="#Code-Conv-block" class="headerlink" title="Code-Conv_block"></a>Code-Conv_block</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">conv_block</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, in_channels, out_channels, kernel_size, stride, padding, use_bn_act)</span>:</span></span><br><span class="line">        super(conv_block, self).__init__()</span><br><span class="line">        self.conv = nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size, stride=stride, padding=padding)</span><br><span class="line">        self.relu = nn.ReLU()</span><br><span class="line">        self.normalization = nn.BatchNorm2d(out_channels)</span><br><span class="line">        self.use_bn_act = use_bn_act</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.use_bn_act:</span><br><span class="line">            <span class="keyword">return</span> self.relu(self.normalization(self.conv(x)))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> self.conv(x)</span><br></pre></td></tr></table></figure>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><h3 id="数据集：Baidu-People-segmentation-dataset"><a href="#数据集：Baidu-People-segmentation-dataset" class="headerlink" title="数据集：Baidu People segmentation dataset"></a>数据集：Baidu People segmentation dataset</h3><p>数据集参考来源：<a href="https://blog.csdn.net/MOU_IT/article/details/82225505" target="_blank" rel="noopener">https://blog.csdn.net/MOU_IT/article/details/82225505</a></p>
+<p>图片显示：</p>
+<p><img src="/2022/06/28/SSFPN/origin_image.png" alt=""></p>
+<p><img src="/2022/06/28/SSFPN/origin_label.png" alt=""></p>
+<p>第一张显示的是原图片，第二张显示的是分割后的图片。</p>
+<p>因为受到机器限制以及数据集像素不统一的问题，因此统一resize成了(224, 224)的大小。</p>
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><p><img src="/2022/06/28/SSFPN/result.png" alt=""></p>
+<p>这是根据config里面的参数train10轮得到的结果，并没有完全run完。</p>
+<p>接下去利用val中得到的最好成绩的模型进行预测</p>
+<p><img src="/2022/06/28/SSFPN/pre_image.png" alt=""></p>
+<p>以上左图为原图，右图为分割图</p>
+<p><img src="/2022/06/28/SSFPN/pre.png" alt=""></p>
+<p>上面这幅图为模型预测的图，根据对比，可以发现，已经大部分相似了。</p>
+<p>可以肯定，如果多训练一段时间，会得到更好的结果。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/DL-Net-Exercise/" rel="tag"><i class="fa fa-google"></i> DL_Net_Exercise</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/04/22/LeNet/" rel="next" title="LeNet">
+                <i class="fa fa-chevron-left"></i> LeNet
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/hello.gif" alt="llfzllfz">
+            
+              <p class="site-author-name" itemprop="name">llfzllfz</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://47.104.95.59/" title="http://47.104.95.59/" rel="noopener" target="_blank">NBUTACM</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://ccccchy.top" title="http://ccccchy.top" rel="noopener" target="_blank">陈鸿宇</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://jlinekai.github.io/" title="https://jlinekai.github.io/" rel="noopener" target="_blank">陈凯涛</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://wfh114.github.io/" title="https://wfh114.github.io/" rel="noopener" target="_blank">王发鸿</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://paulvarm.github.io/" title="https://paulvarm.github.io/" rel="noopener" target="_blank">金家熠</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://xor-star.github.io/" title="https://xor-star.github.io/" rel="noopener" target="_blank">郭吕建</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://xiaotufly.github.io/" title="https://xiaotufly.github.io/" rel="noopener" target="_blank">卢婉青</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.csdn.net/qq_43319028" title="https://blog.csdn.net/qq_43319028" rel="noopener" target="_blank">杨开林</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.csdn.net/llfzllfz" title="https://blog.csdn.net/llfzllfz" rel="noopener" target="_blank">个人CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.cnblogs.com/llfz" title="https://www.cnblogs.com/llfz" rel="noopener" target="_blank">个人博客园</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.csdn.net/qq_35234641" title="https://blog.csdn.net/qq_35234641" rel="noopener" target="_blank">梁佳誉</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SSFPN"><span class="nav-number">1.</span> <span class="nav-text">SSFPN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#模型纵览"><span class="nav-number">1.1.</span> <span class="nav-text">模型纵览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-number">1.2.</span> <span class="nav-text">Overview</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Code-SSFPN"><span class="nav-number">1.2.1.</span> <span class="nav-text">Code-SSFPN</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#比例感知注意力模块（SSAM）"><span class="nav-number">1.3.</span> <span class="nav-text">比例感知注意力模块（SSAM）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Code-SSAM"><span class="nav-number">1.3.1.</span> <span class="nav-text">Code-SSAM</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意力金字塔融合模块（APF）"><span class="nav-number">1.4.</span> <span class="nav-text">注意力金字塔融合模块（APF）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Code-CAM"><span class="nav-number">1.4.1.</span> <span class="nav-text">Code-CAM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Code-APF"><span class="nav-number">1.4.2.</span> <span class="nav-text">Code-APF</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#全局特征上采样（GFU）"><span class="nav-number">1.5.</span> <span class="nav-text">全局特征上采样（GFU）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Code-GFU"><span class="nav-number">1.5.1.</span> <span class="nav-text">Code-GFU</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-Conv-block"><span class="nav-number">1.6.</span> <span class="nav-text">Code-Conv_block</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实践"><span class="nav-number">1.7.</span> <span class="nav-text">实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据集：Baidu-People-segmentation-dataset"><span class="nav-number">1.7.1.</span> <span class="nav-text">数据集：Baidu People segmentation dataset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结果"><span class="nav-number">1.7.2.</span> <span class="nav-text">结果</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">llfzllfz</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">53k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">1:36</span>
+  
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+-->
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+
+
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function (item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '2CRrM2QDej49nJrpnRweheyz-9Nh9j0Va',
+    appKey: 'kr3rcjv2YV5bAWUTGgoqWCWE',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+  
+
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $('.leancloud_visitors');
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
+            
+              .done(function() {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.time + 1);
+              })
+            
+              .fail(function ({ responseJSON }) {
+                console.log(`Failed to save Visitor num, with error message: ${responseJSON.error}`);
+              })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! More info at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .fail(function ({ responseJSON }) {
+          console.log(`LeanCloud Counter Error: ${responseJSON.code} ${responseJSON.error}`);
+        });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + '2CRrM2QDej49nJrpnRweheyz-9Nh9j0Va')
+        .done(function({ api_server }) {
+          var Counter = function(method, url, data) {
+            return $.ajax({
+              method: method,
+              url: 'https://' + api_server + '/1.1' + url,
+              headers: {
+                'X-LC-Id': '2CRrM2QDej49nJrpnRweheyz-9Nh9j0Va',
+                'X-LC-Key': 'kr3rcjv2YV5bAWUTGgoqWCWE',
+                'Content-Type': 'application/json',
+              },
+              data: data
+            });
+          };
+          
+            addCount(Counter);
+          
+        });
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 雪花特效 -->
+<script type="text/javascript">
+  var windowWidth = $(window).width();
+  if (windowWidth > 480) {
+    document.write('<script type="text/javascript" src="/js/src/snow.js"><\/script>');
+  }
+</script>
+
+</body>
+</html>
